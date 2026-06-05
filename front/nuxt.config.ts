@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  components: {
+    global: true,
+    dirs: ['~/components']
+  },
+  css: ['~/assets/css/main.css'],
 
   postcss: {
     plugins: {

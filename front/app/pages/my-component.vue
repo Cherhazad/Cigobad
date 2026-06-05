@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h1>HEYEYYYYY</h1>
+  <h1>my component page</h1>
 </template>
 
 <style scoped>
