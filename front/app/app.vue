@@ -3,8 +3,9 @@
 </script>
 
 <template>
-  <h1>I'm an about page</h1>
-
+  <UApp>
+    <NuxtPage />
+  </UApp>
 </template>
 
 <style scoped>

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-
+import cHeader from "../components/cHeader.vue";
 </script>
 
 <template>
-  <h1>I'm an about page</h1>
-
+  <cHeader/>
 </template>
 
 <style scoped>
