@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import cHeader from "../components/cHeader.vue";
+import CHeader from "../components/cHeader.vue";
 </script>
 
 <template>
-  <cHeader/>
+  <CHeader/>
 </template>
 
 <style scoped>

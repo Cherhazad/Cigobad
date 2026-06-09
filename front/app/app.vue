@@ -1,10 +1,15 @@
 <script setup lang="ts">
 
+import MyHeader from "./layout/myHeader.vue";
 </script>
 
 <template>
   <UApp>
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage>
+        <my-header/>
+      </NuxtPage>
+    </NuxtLayout>
   </UApp>
 </template>
 
