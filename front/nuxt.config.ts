@@ -19,7 +19,11 @@ export default defineNuxtConfig({
             include: [
                 '@vue/devtools-core',
                 '@vue/devtools-kit',
-            ]
+            ],
+            exclude: ["oh-vue-icons/icons"]
+        },
+        ssr: {
+            noExternal: ["oh-vue-icons"]
         }
     },
 
