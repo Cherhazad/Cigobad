@@ -1,9 +1,7 @@
-<script setup lang="ts">
-import CHeader from "../components/CHeader.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <CHeader/>
+  <h1>I'm a landing page</h1>
 </template>
 
 <style scoped>
