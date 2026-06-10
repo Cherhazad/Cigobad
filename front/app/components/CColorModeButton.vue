@@ -14,14 +14,18 @@ const toggleDark = () => {
 
 <template>
   <ClientOnly v-if="!colorMode?.forced">
-    <UButton
-        :icon="isDark ? 'md-darkmode' : 'bi-sun'"
-        color="neutral"
-        variant="ghost"
-        :aria-label="`Switch to ${isDark ? 'light' : 'dark'} mode`"
-        @click="toggleDark"
-    />
-
+    <UTooltip
+        :delay-duration="0" `
+        :text="`Switch to ${isDark ? 'light' : 'dark'} mode`"
+    >
+      <UButton
+          :icon="isDark ? 'i-lucide-moon' : 'bi-sun'"
+          color="neutral"
+          variant="ghost"
+          :aria-label="`Switch to ${isDark ? 'light' : 'dark'} mode`"
+          @click="toggleDark"
+      />
+    </UTooltip>
     <template #fallback>
       <div class="size-8"/>
     </template>

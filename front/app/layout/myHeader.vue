@@ -7,13 +7,23 @@ const items = computed<NavigationMenuItem[]>(() => [{
   to: '',
   children: [
     {
-      label: 'Les membres',
-      description: 'Les membres du club',
+      label: 'Cigobad',
+      description: 'Présentation du club',
       icon: 'fa-users',
     },
     {
-      label: "S'inscrire",
+      label: "Nous rejoindre",
       description: "S'inscrire au club",
+      icon: 'fa-users',
+    },
+    {
+      label: 'Grille tarifaire',
+      description: "Saison 2026-2027",
+      icon: 'fa-users',
+    },
+    {
+      label: 'Conseils & Tutoriels',
+      description: "Conseils & Tutoriels au club",
       icon: 'fa-users',
     },
     {
@@ -27,7 +37,7 @@ const items = computed<NavigationMenuItem[]>(() => [{
 </script>
 
 <template>
-  <c-header menu :menu-items="items">
+  <CHeader menu :menu-items="items">
     <template #logo>
       <img
           src="/cigobad_logo.jpg"
@@ -38,10 +48,10 @@ const items = computed<NavigationMenuItem[]>(() => [{
     </template>
 
     <template #right-items>
-      <ColorModeButton/>
+      <CColorModeButton/>
     </template>
 
-  </c-header>
+  </CHeader>
 </template>
 
 <style scoped>
