@@ -19,7 +19,7 @@ const toggleDark = () => {
         :text="`Switch to ${isDark ? 'light' : 'dark'} mode`"
     >
       <UButton
-          :icon="isDark ? 'i-lucide-moon' : 'bi-sun'"
+          :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
           color="neutral"
           variant="ghost"
           :aria-label="`Switch to ${isDark ? 'light' : 'dark'} mode`"
