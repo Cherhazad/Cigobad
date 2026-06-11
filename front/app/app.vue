@@ -1,14 +1,13 @@
 <script setup lang="ts">
 
-import MyHeader from "./layout/myHeader.vue";
+import MyHeader from "./components/MyHeader.vue";
 </script>
 
 <template>
   <UApp>
     <NuxtLayout>
-      <NuxtPage>
-        <my-header/>
-      </NuxtPage>
+      <MyHeader/>
+      <NuxtPage/>
     </NuxtLayout>
   </UApp>
 </template>

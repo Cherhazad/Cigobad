@@ -15,6 +15,7 @@ const items = computed<NavigationMenuItem[]>(() => [{
       label: "Nous rejoindre",
       description: "S'inscrire au club",
       icon: 'fa-users',
+      to: '/subscription'
     },
     {
       label: 'Grille tarifaire',
