@@ -1,9 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
 import { Category } from '@shared/enums/category.enum';
 import { Level } from '@shared/enums/level.enum';
-import { Session } from '@shared/enums/session.enum';
 import { Formula } from '@shared/enums/formula.enum';
 import { Discount } from '@shared/enums/discount.enum';
+import { Session } from '@shared/enums/session.enum';
 
 @Entity()
 export class User {
@@ -34,7 +35,10 @@ export class User {
   @Column()
   level: Level;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: Session,
+  })
   session: Session[];
 
   @Column()
