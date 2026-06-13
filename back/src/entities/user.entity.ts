@@ -1,10 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-import { Category } from '@shared/enums/category.enum';
-import { Level } from '@shared/enums/level.enum';
-import { Formula } from '@shared/enums/formula.enum';
-import { Discount } from '@shared/enums/discount.enum';
-import { Session } from '@shared/enums/session.enum';
+import { Category, Discount, Formula, Level, Session } from '@shared';
 
 @Entity()
 export class User {
