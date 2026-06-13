@@ -9,6 +9,10 @@ dist/
 # Nest
 dist/
 
+# Shared
+shared/src/**/index.ts
+shared/src/index.ts
+
 # env
 .env
 .env.*

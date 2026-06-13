@@ -8,6 +8,14 @@ export default defineNuxtConfig({
     },
     css: ['~/assets/css/main.css'],
 
+    ssr: false,
+
+    runtimeConfig: {
+        public: {
+            apiBase: 'http://localhost:3008'
+        }
+    },
+
     postcss: {
         plugins: {
             '@tailwindcss/postcss': {},
