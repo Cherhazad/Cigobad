@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type {FormSubmitEvent} from '@nuxt/ui'
 
+const config = useRuntimeConfig()
+const api = config.public.apiBase
+
 const state = reactive({
   email: undefined,
   age: undefined
