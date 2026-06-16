@@ -1,15 +1,14 @@
 {
   "name": "shared",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./dist/index.js"
   },
   "scripts": {
-    "barrels": "ts-node generate-index.ts",
-    "predev": "ts-node generate-index.ts",
-    "prebuild": "ts-node generate-index.ts"
+    "build": "tsc",
+    "barrels": "ts-node generate-index.ts"
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
