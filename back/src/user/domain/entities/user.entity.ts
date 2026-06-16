@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Category, Discount, Formula, Level, Session } from '@shared';
+import { Category, Discount, Formula, Level, Session } from 'shared';
 
 @Entity()
 export class User {
