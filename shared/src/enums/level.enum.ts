@@ -1,5 +1,5 @@
 export enum Level {
-    'Débutant' = 'Débutant',
-    'Intermédiaire' = 'Intermédiaire',
-    'Confirmé' = 'Confirmé'
+    'Debutant' = 'Debutant',
+    'Intermediaire' = 'Intermediaire',
+    'Confirme' = 'Confirme'
 }

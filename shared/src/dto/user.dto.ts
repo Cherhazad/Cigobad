@@ -1,13 +1,16 @@
-import {Category, Discount, Formula, Session} from "../enums";
+import {Category, Discount, Formula, Level, Session} from "../enums";
 
 export class UserDto {
     firstName!: string;
     lastName!: string;
-    email!: string;
     birthDate!: Date;
+    licenceNumber!: string;
+    city!: string;
+    email!: string;
     phoneNumber!: string;
     category!: Category;
     session!: Session;
     formula!: Formula;
     discount!: Discount;
+    level!: Level;
 }

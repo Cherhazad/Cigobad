@@ -2,18 +2,24 @@
   "name": "shared",
   "version": "1.0.0",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.json",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch --tsconfig tsconfig.json",
     "barrels": "ts-node generate-index.ts"
   },
   "devDependencies": {
-    "@types/node": "^25.9.3",
+    "@types/node": "^25.9.4",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.1",
     "typescript": "^6.0.3"
   }
 }

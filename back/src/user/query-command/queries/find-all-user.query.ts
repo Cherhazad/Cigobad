@@ -1,1 +1,1 @@
-export class UserFindAllUserQuery {}
+export class FindAllUserQuery {}
