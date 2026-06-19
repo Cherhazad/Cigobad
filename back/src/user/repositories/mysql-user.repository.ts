@@ -13,4 +13,8 @@ export class MySqlUserRepository implements IUserRepository {
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
+
+  create(user: User): Promise<User> {
+    return this.userRepository.save(user);
+  }
 }

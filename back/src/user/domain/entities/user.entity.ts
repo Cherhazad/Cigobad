@@ -15,36 +15,40 @@ export class User {
   @Column()
   birthDate: Date;
 
-  @Column()
+  @Column({ nullable: true })
+  licenceNumber: string;
+
+  @Column({ nullable: true })
   city: string;
 
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   phoneNumber: string;
 
-  @Column()
+  @Column({ nullable: true })
   category: Category;
 
-  @Column()
+  @Column({ nullable: true })
   level: Level;
 
   @Column({
-    type: 'enum',
+    type: 'set',
     enum: Session,
+    nullable: true,
   })
   session: Session[];
 
-  @Column()
+  @Column({ nullable: true })
   formula: Formula;
 
-  @Column()
+  @Column({ nullable: true })
   discount: Discount;
 
-  @Column()
+  @Column({ nullable: true })
   isAccepted: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   hasPaid: boolean;
 }

@@ -4,11 +4,12 @@ import { IUserRepository } from './domain/ports/user.repository';
 import { MySqlUserRepository } from './repositories/mysql-user.repository';
 import { User } from './domain/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserFindAllHandler } from './handlers/find-all/user-find-all.handler';
+import { FindAllUserHandler } from './handlers/find-all/find-all-user.handler';
 import { CqrsModule } from '@nestjs/cqrs';
+import { CreateUserHandler } from './handlers/create/create-user.handler';
 
-const QueryHandlers = [UserFindAllHandler];
-const CommandHandlers = [];
+const QueryHandlers = [FindAllUserHandler];
+const CommandHandlers = [CreateUserHandler];
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([User])],

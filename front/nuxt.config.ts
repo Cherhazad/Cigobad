@@ -1,4 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import path from 'path'
+import {fileURLToPath} from 'url'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
@@ -23,6 +27,11 @@ export default defineNuxtConfig({
     },
 
     vite: {
+        resolve: {
+            alias: {
+                'shared': path.resolve(__dirname, '../shared/dist/index.mjs')
+            }
+        },
         optimizeDeps: {
             include: [
                 '@vue/devtools-core',
@@ -40,7 +49,6 @@ export default defineNuxtConfig({
     },
 
     modules: [
-        '@nuxt/a11y',
         '@nuxt/eslint',
         '@nuxt/hints',
         '@nuxt/test-utils',
