@@ -20,7 +20,6 @@ const form = useTemplateRef('form')
 const toast = useToast()
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  console.log(event.data)
   const data = await $fetch(`${api}/user`, {
     method: 'POST',
     body: event.data,
