@@ -9,8 +9,9 @@ export class UserDto {
     email!: string;
     phoneNumber!: string;
     category!: Category;
-    session!: Session;
+    session!: Session[];
     formula!: Formula;
     discount!: Discount;
     level!: Level;
+    comment!: string;
 }

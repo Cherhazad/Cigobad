@@ -47,6 +47,9 @@ export class User {
   discount: Discount;
 
   @Column({ nullable: true })
+  comment: string;
+
+  @Column({ nullable: true })
   isAccepted: boolean;
 
   @Column({ nullable: true })
