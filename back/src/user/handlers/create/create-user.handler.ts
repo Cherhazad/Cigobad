@@ -24,6 +24,7 @@ export class CreateUserHandler implements IQueryHandler<CreateUserCommand> {
       category,
       session,
       level,
+      comment,
     } = command.userDto;
 
     const user = new User();
@@ -57,6 +58,9 @@ export class CreateUserHandler implements IQueryHandler<CreateUserCommand> {
     }
     if (level) {
       user.level = level;
+    }
+    if (comment) {
+      user.comment = comment;
     }
 
     return await this.userRepository.create(user);
