@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import type {UserDto} from "shared";
+import type {TableColumn} from "@nuxt/ui/components/Table.vue";
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
@@ -13,9 +14,72 @@ onMounted(async () => {
   })
   users.value = fetchUsers.value
 })
+
+const columns: TableColumn<UserDto>[] = [
+  {
+    accessorKey: 'licenceNumber',
+    header: 'N° Licence ffpbad',
+  },
+  {
+    accessorKey: 'firstName',
+    header: 'Prénom',
+  },
+  {
+    accessorKey: 'lastName',
+    header: 'Nom',
+  },
+  {
+    accessorKey: 'birthDate',
+    header: 'Date de naissance',
+    cell: ({row}) => {
+      return new Date(row.getValue('birthDate')).toLocaleDateString()
+    }
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'phoneNumber',
+    header: 'Téléphone portable',
+  },
+  {
+    accessorKey: 'city',
+    header: 'Ville',
+  },
+  {
+    accessorKey: 'category',
+    header: 'Catégorie',
+  },
+  {
+    accessorKey: 'session',
+    header: 'Sessions',
+  },
+  {
+    accessorKey: 'formula',
+    header: 'Formule',
+  },
+  {
+    accessorKey: 'discount',
+    header: 'Réduction',
+  },
+  {
+    accessorKey: 'level',
+    header: 'Niveau',
+  },
+  {
+    accessorKey: 'city',
+    header: 'Ville',
+  },
+  {
+    accessorKey: 'comment',
+    header: 'Commentaire',
+  },
+]
 </script>
 
 <template>
+
   <div class="container border-2 mx-auto p-12">
     <h1 class="text-center">CLUB BADMINTON LATTES</h1>
     <p>Bienvenue à CIGO BAD Lattes
@@ -32,8 +96,11 @@ onMounted(async () => {
   </div>
 
   <div class="mx-auto p-12">
-    <UTable :data="users" class="flex-1"/>
+    <UContainer>
+      <UTable :data="users" :columns class="flex-1"/>
+    </UContainer>
   </div>
+
 </template>
 
 <style scoped>
