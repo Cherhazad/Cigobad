@@ -52,7 +52,7 @@ export class UpdateUserCommandHandler implements ICommandHandler<UpdateUserComma
     if (email && user.email !== email) {
       user.email = email;
     }
-    if (discount && discount !== discount) {
+    if (discount && user.discount !== discount) {
       user.discount = discount;
     }
     if (phoneNumber && user.phoneNumber !== phoneNumber) {
