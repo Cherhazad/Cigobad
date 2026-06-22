@@ -28,13 +28,12 @@ export class UpdateUserCommandHandler implements ICommandHandler<UpdateUserComma
       firstName,
     } = command.user;
 
-    let user: User = {} as User;
-    if (id) {
-      user = await this.userRepository.findById(id);
+    if (!id) {
+      throw new BadRequestException('User id is required for update');
     }
-    if (!user) {
-      throw new BadRequestException(`User with id ${id} not found`);
-    }
+
+    const user = await this.userRepository.findById(id);
+
     if (firstName && user.firstName !== firstName) {
       user.firstName = firstName;
     }
@@ -62,8 +61,12 @@ export class UpdateUserCommandHandler implements ICommandHandler<UpdateUserComma
     if (formula && user.formula !== formula) {
       user.formula = formula;
     }
-    if (birthDate && user.birthDate !== birthDate) {
-      user.birthDate = birthDate;
+    if (birthDate) {
+      const nextBirthDate =
+        typeof birthDate === 'string' ? new Date(birthDate) : birthDate;
+      if (user.birthDate !== nextBirthDate) {
+        user.birthDate = nextBirthDate;
+      }
     }
     if (session && user.session !== session) {
       user.session = session;

@@ -62,12 +62,12 @@ export class User {
   @Column({ nullable: true })
   hasPaid: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 
-  @DeleteDateColumn()
-  delete_at: Date;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  delete_at: Date | null;
 }

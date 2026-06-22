@@ -68,10 +68,6 @@ const columns: TableColumn<UserDto>[] = [
     header: 'Niveau',
   },
   {
-    accessorKey: 'city',
-    header: 'Ville',
-  },
-  {
     accessorKey: 'comment',
     header: 'Commentaire',
   },
@@ -97,7 +93,7 @@ const columns: TableColumn<UserDto>[] = [
 
   <div class="mx-auto p-12">
     <UContainer>
-      <UTable :data="users" :columns class="flex-1"/>
+      <UTable :data="users" :columns="columns" class="flex-1"/>
     </UContainer>
   </div>
 

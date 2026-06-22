@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { UserDto } from 'shared';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from '../query-command/commands/create-user.command';
@@ -24,12 +32,16 @@ export class UserController {
   }
 
   @Get(':id')
-  findById(id: number): Promise<UserDto> {
+  findById(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
     return this.queryBus.execute(new FindByIdUserQuery(id));
   }
 
   @Patch(':id')
-  updateUser(@Body() userDto: UserDto): Promise<UserDto> {
+  updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() userDto: UserDto,
+  ): Promise<UserDto> {
+    userDto.id = id;
     return this.commandBus.execute(new UpdateUserCommand(userDto));
   }
 }
