@@ -7,6 +7,7 @@ const config = useRuntimeConfig()
 const api = config.public.apiBase
 
 const users = ref<UserDto[]>()
+const UButton = resolveComponent('UButton')
 
 onMounted(async () => {
   const {data: fetchUsers} = await useFetch(`${api}/user`, {
@@ -70,8 +71,16 @@ const columns: TableColumn<UserDto>[] = [
   {
     accessorKey: 'comment',
     header: 'Commentaire',
-  },
+  }
 ]
+
+const deleteUser = (user: UserDto) => {
+  console.log('delete', user.firstName)
+}
+
+const editUser = (user: UserDto) => {
+  console.log('edit', user.firstName)
+}
 </script>
 
 <template>
@@ -93,7 +102,14 @@ const columns: TableColumn<UserDto>[] = [
 
   <div class="mx-auto p-12">
     <UContainer>
-      <UTable :data="users" :columns="columns" class="flex-1"/>
+      <CTable :data="users" :columns="columns" filterable="email" selectable show-actions class="flex-1">
+        <template #item-actions="{ row }">
+          <div class="flex flex-col">
+            <UButton variant="ghost" @click="editUser(row)">Modifier</UButton>
+            <UButton variant="ghost" color="error" @click="deleteUser(row)">Supprimer</UButton>
+          </div>
+        </template>
+      </CTable>
     </UContainer>
   </div>
 
