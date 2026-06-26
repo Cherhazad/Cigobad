@@ -55,53 +55,14 @@ const baseColumns = computed<TableColumn<T>[]>(() => {
 
   cols.push(...props.columns)
 
-  /*  if (props.showActions && slots['item-actions']) {
-      cols.push({
-        id: 'actions',
-        enableHiding: false,
-        meta: {class: {td: 'text-right'}},
-        cell: ({row}) => h(UDropdownMenu, {
-          content: {align: 'end'},
-          'aria-label': 'Actions dropdown'
-        }, {
-          default: () => h(UButton, {
-            icon: 'i-lucide-ellipsis-vertical',
-            color: 'neutral',
-            variant: 'ghost',
-            'aria-label': 'Actions dropdown'
-          }),
-          // on passe le slot item-actions comme contenu du dropdown
-          content: () => slots['item-actions']?.({row: row.original})
-        })
-      })
-    }*/
-
-  if (props.showActions && slots['item-actions']) {
+  if (props.showActions) {
     cols.push({
       id: 'actions',
+      header: 'Actions',
       enableHiding: false,
-      meta: {class: {td: 'text-right'}},
-      cell: ({row}) => {
-        return h(
-            resolveComponent('UDropdownMenu'),
-            {
-              content: {align: 'end'},
-              'aria-label': 'Actions dropdown'
-            },
-            {
-              default: () => slots['item-actions']?.({row: row.original}),
-              trigger: () => h(UButton, {
-                icon: 'i-lucide-ellipsis-vertical',
-                color: 'neutral',
-                variant: 'ghost',
-                'aria-label': 'Actions dropdown'
-              })
-            }
-        )
-      }
+      meta: {class: {td: 'text-right'}}
     })
   }
-
   return cols
 })
 </script>
@@ -153,6 +114,12 @@ const baseColumns = computed<TableColumn<T>[]>(() => {
     >
       <template v-for="(_, name) in slots" #[name]="slotProps">
         <slot v-if="name !== 'item-actions' && name !== 'toolbar'" :name="name" v-bind="slotProps"/>
+      </template>
+
+      <template v-if="showActions && slots['item-actions']" #actions-cell="{ row }">
+        <CTableActions :row="row.original">
+          <slot name="item-actions" :row="row.original"/>
+        </CTableActions>
       </template>
     </UTable>
 
