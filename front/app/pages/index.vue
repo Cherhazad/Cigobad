@@ -2,12 +2,13 @@
 
 import type {UserDto} from "shared";
 import type {TableColumn} from "@nuxt/ui/components/Table.vue";
+import {resolveComponent} from "vue";
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
 
 const users = ref<UserDto[]>()
-const UButton = resolveComponent('UButton')
+const UDropdownMenuItem = resolveComponent('UDropdownMenuItem')
 
 onMounted(async () => {
   const {data: fetchUsers} = await useFetch(`${api}/user`, {
@@ -102,12 +103,20 @@ const editUser = (user: UserDto) => {
 
   <div class="mx-auto p-12">
     <UContainer>
-      <CTable :data="users" :columns="columns" filterable="email" selectable show-actions class="flex-1">
+      <CTable
+          :data="users"
+          :columns="columns"
+          filterable="email"
+          selectable
+          show-actions
+          class="flex-1"
+          @update:selected="rows => console.log('jai updaté ce user', rows)"
+      >
         <template #item-actions="{ row }">
-          <div class="flex flex-col">
-            <UButton variant="ghost" @click="editUser(row)">Modifier</UButton>
-            <UButton variant="ghost" color="error" @click="deleteUser(row)">Supprimer</UButton>
-          </div>
+          <UDropdownMenu>
+            <UDropdownMenuItem @click="editUser(row)">Modifier</UDropdownMenuItem>
+            <UDropdownMenuItem color="error" @click="deleteUser(row)">Supprimer</UDropdownMenuItem>
+          </UDropdownMenu>
         </template>
       </CTable>
     </UContainer>
