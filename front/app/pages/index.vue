@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import type {UserDto} from "shared";
-import type {TableColumn} from "@nuxt/ui/components/Table.vue";
 import {resolveComponent} from "vue";
 
 const config = useRuntimeConfig()
@@ -17,60 +16,57 @@ onMounted(async () => {
   users.value = fetchUsers.value
 })
 
-const columns: TableColumn<UserDto>[] = [
+const columns = [
   {
-    accessorKey: 'licenceNumber',
+    field: 'licenceNumber',
     header: 'N° Licence ffpbad',
   },
   {
-    accessorKey: 'firstName',
+    field: 'firstName',
     header: 'Prénom',
   },
   {
-    accessorKey: 'lastName',
+    field: 'lastName',
     header: 'Nom',
   },
   {
-    accessorKey: 'birthDate',
-    header: 'Date de naissance',
-    cell: ({row}) => {
-      return new Date(row.getValue('birthDate')).toLocaleDateString()
-    }
+    field: 'birthDate',
+    header: 'Date de naissance'
   },
   {
-    accessorKey: 'email',
+    field: 'email',
     header: 'Email',
   },
   {
-    accessorKey: 'phoneNumber',
+    field: 'phoneNumber',
     header: 'Téléphone portable',
   },
   {
-    accessorKey: 'city',
+    field: 'city',
     header: 'Ville',
   },
   {
-    accessorKey: 'category',
+    field: 'category',
     header: 'Catégorie',
   },
   {
-    accessorKey: 'session',
+    field: 'session',
     header: 'Sessions',
   },
   {
-    accessorKey: 'formula',
+    field: 'formula',
     header: 'Formule',
   },
   {
-    accessorKey: 'discount',
+    field: 'discount',
     header: 'Réduction',
   },
   {
-    accessorKey: 'level',
+    field: 'level',
     header: 'Niveau',
   },
   {
-    accessorKey: 'comment',
+    field: 'comment',
     header: 'Commentaire',
   }
 ]
@@ -86,41 +82,49 @@ const editUser = (user: UserDto) => {
 
 <template>
 
-  <div class="container border-2 mx-auto p-12">
-    <h1 class="text-center">CLUB BADMINTON LATTES</h1>
-    <p>Bienvenue à CIGO BAD Lattes
-      L'entrée principale du gymnase se trouve derrière le collège Georges Brassens, côté Piscine « Les Néréides »
-      à 10 minutes du Tram ligne 3, Lattes Centre.
-      <br>7 terrains / 4 créneaux :
-      <ul>
-        <li>Mardi 20h/23h</li>
-        <li>Jeudi 20h15/23h</li>
-        <li>Vendredi 20h/23h</li>
-        <li>Samedi 9h/11h (12h)</li>
-      </ul>
-    </p>
-  </div>
+  <!--  <div class="container border-2 mx-auto p-12">
+      <h1 class="text-center">CLUB BADMINTON LATTES</h1>
+      <p>Bienvenue à CIGO BAD Lattes
+        L'entrée principale du gymnase se trouve derrière le collège Georges Brassens, côté Piscine « Les Néréides »
+        à 10 minutes du Tram ligne 3, Lattes Centre.
+        <br>7 terrains / 4 créneaux :
+        <ul>
+          <li>Mardi 20h/23h</li>
+          <li>Jeudi 20h15/23h</li>
+          <li>Vendredi 20h/23h</li>
+          <li>Samedi 9h/11h (12h)</li>
+        </ul>
+      </p>
+    </div>-->
 
-  <div class="mx-auto p-12">
-    <UContainer>
-      <CTable
-          :data="users"
-          :columns="columns"
-          filterable="email"
-          selectable
-          show-actions
-          class="flex-1"
-          @update:selected="rows => console.log('jai updaté ce user', rows)"
-      >
-        <template #item-actions="{ row }">
-          <UDropdownMenu>
-            <UDropdownMenuItem @click="editUser(row)">Modifier</UDropdownMenuItem>
-            <UDropdownMenuItem color="error" @click="deleteUser(row)">Supprimer</UDropdownMenuItem>
-          </UDropdownMenu>
-        </template>
-      </CTable>
-    </UContainer>
-  </div>
+  <!--  <div class="mx-auto p-12">
+      <UContainer>
+        <CTable
+            :data="users"
+            :columns="columns"
+            filterable="email"
+            selectable
+            show-actions
+            class="flex-1"
+            @update:selected="rows => console.log('jai updaté ce user', rows)"
+        >
+          <template #item-actions="{ row }">
+            <UDropdownMenu>
+              <UDropdownMenuItem @click="editUser(row)">Modifier</UDropdownMenuItem>
+              <UDropdownMenuItem color="error" @click="deleteUser(row)">Supprimer</UDropdownMenuItem>
+            </UDropdownMenu>
+          </template>
+        </CTable>
+      </UContainer>
+    </div>-->
+  <CTablePrimevue :items="users" :columns="columns">
+    <template #item-birthDate="{ data }">
+      {{ new Date(data.birthDate).toLocaleDateString('fr-FR') }}
+    </template>
+    <template #item-actions="{items}">
+      <Button @click="editUser(items)"/>
+    </template>
+  </CTablePrimevue>
 
 </template>
 

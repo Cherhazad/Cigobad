@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'path'
 import {fileURLToPath} from 'url'
+import Aura from '@primeuix/themes/aura';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 export default defineNuxtConfig({
@@ -16,7 +17,8 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            apiBase: 'http://localhost:3008'
+            apiBase: 'http://localhost:3008',
+            PRIMEUI_LICENSE: process.env.NUXT_PUBLIC_PRIMEUI_LICENSE
         }
     },
 
@@ -49,6 +51,14 @@ export default defineNuxtConfig({
         transpile: ["oh-vue-icons"]
     },
 
+    primevue: {
+        options: {
+            theme: {
+                preset: Aura
+            }
+        }
+    },
+
     modules: [
         '@nuxt/eslint',
         '@nuxt/hints',
@@ -59,6 +69,7 @@ export default defineNuxtConfig({
         '@nuxtjs/device',
         '@nuxtjs/eslint-module',
         '@nuxtjs/google-fonts',
-        '@pinia/nuxt'
+        '@pinia/nuxt',
+        '@primevue/nuxt-module'
     ]
 })

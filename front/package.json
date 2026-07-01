@@ -21,11 +21,13 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@pinia/nuxt": "^0.11.3",
+    "@primeuix/themes": "^3.0.0-rc.1",
     "eslint": "^9.39.4",
     "iconify": "^1.4.0",
     "nuxt": "^4.4.6",
     "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^3.0.4",
+    "primevue": "^5.0.0-rc.1",
     "shared": "file:../shared",
     "storybook": "~9.0.5",
     "typescript": "^6.0.3",
@@ -33,6 +35,7 @@
     "vue-router": "^5.0.7"
   },
   "devDependencies": {
+    "@primevue/nuxt-module": "^5.0.0-rc.1",
     "@tailwindcss/postcss": "^4.3.0",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0"
