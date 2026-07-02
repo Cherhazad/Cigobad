@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
 import type {UserDto} from "shared";
-import {resolveComponent} from "vue";
+import {Pencil, Times} from "@primeicons/vue";
+import type {MenuItem} from "primevue/menuitem";
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
 
 const users = ref<UserDto[]>()
-const UDropdownMenuItem = resolveComponent('UDropdownMenuItem')
 
 onMounted(async () => {
   const {data: fetchUsers} = await useFetch(`${api}/user`, {
@@ -78,6 +78,19 @@ const deleteUser = (user: UserDto) => {
 const editUser = (user: UserDto) => {
   console.log('edit', user.firstName)
 }
+
+const items = ref<MenuItem[]>([
+  {
+    label: 'Éditer',
+    icon: Pencil
+  },
+  {separator: true},
+  {
+    label: 'Supprimer',
+    icon: Times,
+    class: 'text-red-500! dark:text-red-400!'
+  },
+]);
 </script>
 
 <template>
@@ -97,34 +110,14 @@ const editUser = (user: UserDto) => {
       </p>
     </div>-->
 
-  <!--  <div class="mx-auto p-12">
-      <UContainer>
-        <CTable
-            :data="users"
-            :columns="columns"
-            filterable="email"
-            selectable
-            show-actions
-            class="flex-1"
-            @update:selected="rows => console.log('jai updaté ce user', rows)"
-        >
-          <template #item-actions="{ row }">
-            <UDropdownMenu>
-              <UDropdownMenuItem @click="editUser(row)">Modifier</UDropdownMenuItem>
-              <UDropdownMenuItem color="error" @click="deleteUser(row)">Supprimer</UDropdownMenuItem>
-            </UDropdownMenu>
-          </template>
-        </CTable>
-      </UContainer>
-    </div>-->
-  <CTablePrimevue :items="users" :columns="columns">
+  <CTable :items="users" :columns="columns">
     <template #item-birthDate="{ data }">
       {{ new Date(data.birthDate).toLocaleDateString('fr-FR') }}
     </template>
-    <template #item-actions="{items}">
-      <Button @click="editUser(items)"/>
+    <template #item-actions="{item}">
+      <CDropdownMenu :menu-items="items" menu-icon="i-lucide-ellipsis-vertical"/>
     </template>
-  </CTablePrimevue>
+  </CTable>
 
 </template>
 
