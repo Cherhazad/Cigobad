@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import {FieldTypes} from "shared";
+import type {MenuItem} from "primevue/menuitem";
 
 defineProps({
   label: {
@@ -10,6 +11,10 @@ defineProps({
   type: {
     type: FieldTypes,
     required: true
+  },
+  items: {
+    type: Array as PropType<MenuItem[]>,
+    default: () => []
   }
 })
 
@@ -24,6 +29,7 @@ const emit = defineEmits(["update:modelValue"])
         v-model="model"
         v-bind="$attrs"
         type="string"
+        class="w-full"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -32,6 +38,7 @@ const emit = defineEmits(["update:modelValue"])
         v-model="model"
         type="email"
         v-bind="$attrs"
+        class="w-full"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -40,6 +47,7 @@ const emit = defineEmits(["update:modelValue"])
         v-model="model"
         type="date"
         v-bind="$attrs"
+        class="w-full"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -48,6 +56,7 @@ const emit = defineEmits(["update:modelValue"])
         v-model="model"
         type="tel"
         v-bind="$attrs"
+        class="w-full"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -55,6 +64,8 @@ const emit = defineEmits(["update:modelValue"])
         v-if="type === FieldTypes.select"
         v-model="model"
         v-bind="$attrs"
+        class="w-full"
+        :items="items"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -63,6 +74,8 @@ const emit = defineEmits(["update:modelValue"])
         v-model="model"
         v-bind="$attrs"
         multiple
+        :items="items"
+        class="w-full"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -70,18 +83,21 @@ const emit = defineEmits(["update:modelValue"])
         v-if="type === FieldTypes.textarea"
         v-model="model"
         v-bind="$attrs"
+        class="w-full"
     />
 
     <UCheckbox
         v-if="type === FieldTypes.checkbox"
         v-model="model"
         v-bind="$attrs"
+        class="w-full"
     />
 
     <UInputNumber
         v-if="type === FieldTypes.number"
         v-model="model"
         v-bind="$attrs"
+        class="w-full"
     />
 
   </UFormField>
