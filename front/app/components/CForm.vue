@@ -3,7 +3,7 @@
 const form = useTemplateRef('form')
 
 const props = defineProps({
-  items: {
+  item: {
     type: Object,
     required: true,
   },
@@ -21,9 +21,9 @@ const emits = defineEmits(['submit'])
 </script>
 
 <template>
-  <UForm v-bind="$attrs" ref="form" :state="items" @submit="$emit('submit')">
+  <UForm v-bind="$attrs" ref="form" :state="item" class="space-y-4" @submit="$emit('submit') ">
 
-    <slot name="fields"/>
+    <slot/>
 
     <div v-if="hasFooter">
       <UButton @click="form?.submit()">

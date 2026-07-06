@@ -128,20 +128,18 @@ const getItems = (user: UserDto): MenuItem[] => [
   <Drawer
       v-model:visible="sidePanel" header="Edit user" position="right"
       class="w-full! sm:w-96! md:w-md! lg:w-120!">
-    <CForm :items="selectedUser">
-      <template #fields>
-        <CFormField
-            v-model="selectedUser.firstName"
-            label="Prénom"
-            :type="FieldTypes.string"
-        />
+    <CForm :item="selectedUser">
+      <CFormField
+          v-model="selectedUser.firstName"
+          label="Prénom"
+          :type="FieldTypes.string"
+      />
 
-        <CFormField
-            v-model="selectedUser.email"
-            label="Email"
-            :type="FieldTypes.email"
-        />
-      </template>
+      <CFormField
+          v-model="selectedUser.email"
+          label="Email"
+          :type="FieldTypes.email"
+      />
     </CForm>
   </Drawer>
 
