@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {FieldTypes, type UserDto} from "shared";
+import type {UserDto} from "shared";
 import {Pencil, Times} from "@primeicons/vue";
 import type {MenuItem} from "primevue/menuitem";
 import Drawer from 'primevue/drawer';
@@ -128,19 +128,7 @@ const getItems = (user: UserDto): MenuItem[] => [
   <Drawer
       v-model:visible="sidePanel" header="Edit user" position="right"
       class="w-full! sm:w-96! md:w-md! lg:w-120!">
-    <CForm :item="selectedUser">
-      <CFormField
-          v-model="selectedUser.firstName"
-          label="Prénom"
-          :type="FieldTypes.string"
-      />
-
-      <CFormField
-          v-model="selectedUser.email"
-          label="Email"
-          :type="FieldTypes.email"
-      />
-    </CForm>
+    <UserForm :user="selectedUser"/>
   </Drawer>
 
 

@@ -17,7 +17,6 @@ defineProps({
     default: () => []
   }
 })
-
 const model = defineModel()
 const emit = defineEmits(["update:modelValue"])
 </script>

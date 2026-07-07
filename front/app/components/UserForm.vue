@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import {Category, Discount, FieldTypes, Formula, Level, Session, type UserDto} from "shared";
+import type {UserDto} from "shared";
+import {Category, Discount, FieldTypes, Formula, Level, Session} from "shared";
 
-const emits = defineEmits(['submit'])
+const emits = defineEmits<{
+  submit: [user: UserDto]
+}>()
 
 const categories = Object.values(Category)
 const sessions = Object.values(Session)
@@ -9,12 +12,9 @@ const formulas = Object.values(Formula)
 const discounts = Object.values(Discount)
 const levels = Object.values(Level)
 
-const props = defineProps({
-  user: {
-    type: Object as PropType<UserDto>,
-    default: undefined,
-  }
-})
+const props = defineProps<{
+  user?: UserDto
+}>()
 
 const selectedUser = ref<UserDto>(props.user ? {...props.user} : {} as UserDto)
 
@@ -25,7 +25,10 @@ watch(() => props.user, (newUser) => {
 </script>
 
 <template>
-  <CForm button-label="Envoyer" :item="selectedUser" @submit="$emit('submit')">
+  <CForm
+      :button-label="props.user ? 'Enregistrer' : 'Envoyer'"
+      :item="selectedUser"
+      @submit="emits('submit', selectedUser)">
     <CFormField
         v-model="selectedUser.firstName"
         label="Prénom"
