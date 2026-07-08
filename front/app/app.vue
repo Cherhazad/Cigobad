@@ -11,6 +11,6 @@ import MyHeader from "./components/MyHeader.vue";
   </UApp>
 </template>
 
-<style>
+<style scoped>
 
 </style>
