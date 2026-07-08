@@ -2,21 +2,19 @@
 import type {UserDto} from "shared";
 import {Pencil, Times} from "@primeicons/vue";
 import type {MenuItem} from "primevue/menuitem";
-import Drawer from 'primevue/drawer';
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
 
-const users = ref<UserDto[]>()
 const sidePanel = ref(false)
 const selectedUser = ref<UserDto>({} as UserDto)
 
-onMounted(async () => {
-  const {data: fetchUsers} = await useFetch(`${api}/user`, {
-    method: 'GET',
-  })
-  users.value = fetchUsers.value
+const {data: fetchUsers, refresh} = await useFetch<UserDto[]>(`${api}/user`, {
+  method: 'GET',
 })
+
+const users = computed(() => fetchUsers.value ?? [])
+//régler le problème de refresh qui ne semble pas marcher
 
 const columns = [
   {
@@ -78,7 +76,7 @@ const deleteUser = (user: UserDto) => {
 }
 
 const editUser = (user: UserDto) => {
-  selectedUser.value = {...user} // copie pour ne pas muter l'original
+  selectedUser.value = {...user}
   sidePanel.value = true
 }
 
@@ -100,7 +98,6 @@ const getItems = (user: UserDto): MenuItem[] => [
 </script>
 
 <template>
-
   <div class="container border-2 mx-auto p-12">
     <h1 class="text-center">CLUB BADMINTON LATTES</h1>
     <p>Bienvenue à CIGO BAD Lattes
@@ -125,11 +122,14 @@ const getItems = (user: UserDto): MenuItem[] => [
     </template>
   </CTable>
 
-  <Drawer
-      v-model:visible="sidePanel" header="Edit user" position="right"
-      class="w-full! sm:w-96! md:w-md! lg:w-120!">
-    <UserForm :user="selectedUser"/>
-  </Drawer>
+  <USlideover
+      v-model:open="sidePanel"
+      title="Éditer les informations"
+  >
+    <template #body>
+      <UserForm :user="selectedUser" @submitted="sidePanel = false; refresh()"/>
+    </template>
+  </USlideover>
 
 
 </template>

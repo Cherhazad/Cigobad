@@ -19,6 +19,7 @@ defineProps({
 })
 const model = defineModel()
 const emit = defineEmits(["update:modelValue"])
+
 </script>
 
 <template>
@@ -41,13 +42,11 @@ const emit = defineEmits(["update:modelValue"])
         @update:model-value="emit('update:modelValue', $event)"
     />
 
-    <UInput
+    <DatePicker
         v-if="type === FieldTypes.date"
         v-model="model"
-        type="date"
-        v-bind="$attrs"
-        class="w-full"
-        @update:model-value="emit('update:modelValue', $event)"
+        show-week
+        class="max-w-full"
     />
 
     <UInput
