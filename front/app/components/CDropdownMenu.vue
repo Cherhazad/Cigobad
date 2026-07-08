@@ -3,7 +3,7 @@ import type {MenuItem} from "primevue/menuitem";
 
 const menu = ref();
 
-const props = defineProps({
+defineProps({
   menuItems: {
     type: Array as PropType<MenuItem[]>,
     required: true,

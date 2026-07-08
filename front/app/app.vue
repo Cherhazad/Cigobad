@@ -11,6 +11,8 @@ import MyHeader from "./components/MyHeader.vue";
   </UApp>
 </template>
 
-<style scoped>
-
+<style>
+[data-radix-popper-content-wrapper] {
+  z-index: 9999 !important;
+}
 </style>

@@ -2,9 +2,8 @@
 import type {UserDto} from "shared";
 import {Category, Discount, FieldTypes, Formula, Level, Session} from "shared";
 
-const emits = defineEmits<{
-  submit: [user: UserDto]
-}>()
+const config = useRuntimeConfig()
+const api = config.public.apiBase
 
 const categories = Object.values(Category)
 const sessions = Object.values(Session)
@@ -17,18 +16,59 @@ const props = defineProps<{
 }>()
 
 const selectedUser = ref<UserDto>(props.user ? {...props.user} : {} as UserDto)
+const isFormSent = ref<boolean>(false)
+const toast = useToast()
 
 watch(() => props.user, (newUser) => {
   if (newUser) selectedUser.value = {...newUser}
 }, {deep: true})
 
+const onCreateUser = async () => {
+  const data = await $fetch(`${api}/user`, {
+    method: 'POST',
+    body: selectedUser.value,
+    onResponseError({response}) {
+      toast.add({title: 'Error', description: response._data?.message})
+    }
+  })
+  if (data) {
+    toast.add({title: 'Success', description: 'Le formulaire a bien été envoyé.', color: 'success'})
+    isFormSent.value = true
+  }
+}
+
+const onEditUser = async () => {
+  const data = await $fetch(`${api}/user/${selectedUser.value.id}`, {
+    method: 'PATCH',
+    body: selectedUser.value,
+    onResponseError({response}) {
+      toast.add({title: 'Error', description: response._data?.message})
+    }
+  })
+  if (data) {
+    toast.add({title: 'Success', description: 'Modifications enregistrées.', color: 'success'})
+    isFormSent.value = true
+  }
+}
+
+const onSubmit = async () => {
+  if (props.user) {
+    await onEditUser()
+  } else {
+    await onCreateUser()
+  }
+}
+
+defineEmits(['submitted'])
 </script>
 
 <template>
   <CForm
+      v-if="!isFormSent"
       :button-label="props.user ? 'Enregistrer' : 'Envoyer'"
       :item="selectedUser"
-      @submit="emits('submit', selectedUser)">
+      @submit="() => {onSubmit(); $emit('submitted')}"
+  >
     <CFormField
         v-model="selectedUser.firstName"
         label="Prénom"
@@ -106,6 +146,12 @@ watch(() => props.user, (newUser) => {
         :type="FieldTypes.textarea"
     />
   </CForm>
+
+  <div v-if="isFormSent" class="space-y-8 w-full text-center text-lg">
+    <p>Formulaire d'inscription envoyé.
+      <br>Merci 🏸
+    </p>
+  </div>
 </template>
 
 <style scoped>
