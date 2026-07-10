@@ -8,13 +8,22 @@ const api = config.public.apiBase
 
 const sidePanel = ref(false)
 const selectedUser = ref<UserDto>({} as UserDto)
+const users = ref()
+const toast = useToast()
 
 const {data: fetchUsers, refresh} = await useFetch<UserDto[]>(`${api}/user`, {
   method: 'GET',
 })
 
-const users = computed(() => fetchUsers.value ?? [])
-//régler le problème de refresh qui ne semble pas marcher
+onMounted(async () => {
+  users.value = fetchUsers.value
+})
+
+watch(fetchUsers, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    users.value = newValue
+  }
+})
 
 const columns = [
   {
@@ -71,20 +80,34 @@ const columns = [
   }
 ]
 
-const deleteUser = (user: UserDto) => {
-  console.log('delete', user.firstName)
+const deleteUser = async (user: UserDto) => {
+  const data = await $fetch(`${api}/user/${user.id}`, {
+    method: 'DELETE',
+    onResponseError({response}) {
+      toast.add({title: 'Error', description: response._data?.message})
+    }
+  })
+  if (data) {
+    toast.add({title: 'Success', description: 'Modifications enregistrées.', color: 'success'})
+  }
+  refresh()
 }
 
-const editUser = (user: UserDto) => {
+const onEditUser = (user: UserDto) => {
   selectedUser.value = {...user}
   sidePanel.value = true
+}
+
+const onSubmitted = async () => {
+  refresh()
+  sidePanel.value = false
 }
 
 const getItems = (user: UserDto): MenuItem[] => [
   {
     label: 'Éditer',
     icon: Pencil,
-    command: () => editUser(user),
+    command: () => onEditUser(user),
   },
   {separator: true},
   {
@@ -113,21 +136,23 @@ const getItems = (user: UserDto): MenuItem[] => [
     </p>
   </div>
 
-  <CTable :items="users" :columns="columns">
-    <template #item-birthDate="{ data }">
-      {{ new Date(data.birthDate).toLocaleDateString('fr-FR') }}
-    </template>
-    <template #item-actions="{item}">
-      <CDropdownMenu :menu-items="getItems(item)" menu-icon="i-lucide-ellipsis-vertical"/>
-    </template>
-  </CTable>
+  <div class="container border-2 mx-auto p-12">
+    <CTable :items="users" :columns="columns">
+      <template #item-birthDate="{ data }">
+        {{ new Date(data.birthDate).toLocaleDateString('fr-FR') }}
+      </template>
+      <template #item-actions="{item}">
+        <CDropdownMenu :menu-items="getItems(item)" menu-icon="i-lucide-ellipsis-vertical"/>
+      </template>
+    </CTable>
+  </div>
 
   <USlideover
       v-model:open="sidePanel"
       title="Éditer les informations"
   >
     <template #body>
-      <UserForm :user="selectedUser" @submitted="sidePanel = false; refresh()"/>
+      <UserForm :user="selectedUser" @submitted="onSubmitted()"/>
     </template>
   </USlideover>
 
