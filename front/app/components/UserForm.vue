@@ -59,7 +59,11 @@ const onSubmit = async () => {
   }
 }
 
-defineEmits(['submitted'])
+const handleSubmit = async () => {
+  await onSubmit()
+  emits('submitted')
+}
+const emits = defineEmits(['submitted'])
 </script>
 
 <template>
@@ -67,7 +71,7 @@ defineEmits(['submitted'])
       v-if="!isFormSent"
       :button-label="props.user ? 'Enregistrer' : 'Envoyer'"
       :item="selectedUser"
-      @submit="() => {onSubmit(); $emit('submitted')}"
+      @submit="handleSubmit"
   >
     <CFormField
         v-model="selectedUser.firstName"
