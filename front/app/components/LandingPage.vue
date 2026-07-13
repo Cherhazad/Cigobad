@@ -2,6 +2,7 @@
 import type {UserDto} from "shared";
 import {Pencil, Times} from "@primeicons/vue";
 import type {MenuItem} from "primevue/menuitem";
+import {useToast} from 'primevue/usetoast';
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
@@ -84,11 +85,16 @@ const deleteUser = async (user: UserDto) => {
   const data = await $fetch(`${api}/user/${user.id}`, {
     method: 'DELETE',
     onResponseError({response}) {
-      toast.add({title: 'Error', description: response._data?.message})
+      toast.add({
+        severity: 'error',
+        summary: 'Erreur lors de la suppresion',
+        detail: response._data?.message,
+        life: 3000
+      })
     }
   })
   if (data) {
-    toast.add({title: 'Success', description: 'Modifications enregistrées.', color: 'success'})
+    toast.add({severity: 'success', summary: 'Suppression', detail: 'Utilisateur supprimé avec succès.', life: 3000})
   }
   refresh()
 }
@@ -100,6 +106,7 @@ const onEditUser = (user: UserDto) => {
 
 const onSubmitted = async () => {
   refresh()
+  toast.add({severity: 'success', summary: 'Modifications', detail: 'Modifications enregistrées', life: 3000});
   sidePanel.value = false
 }
 
@@ -117,23 +124,23 @@ const getItems = (user: UserDto): MenuItem[] => [
     command: () => deleteUser(user)
   },
 ]
-
 </script>
 
 <template>
+  <Toast/>
   <div class="container border-2 mx-auto p-12">
     <h1 class="text-center">CLUB BADMINTON LATTES</h1>
     <p>Bienvenue à CIGO BAD Lattes
       L'entrée principale du gymnase se trouve derrière le collège Georges Brassens, côté Piscine « Les Néréides »
       à 10 minutes du Tram ligne 3, Lattes Centre.
       <br>7 terrains / 4 créneaux :
-      <ul>
-        <li>Mardi 20h/23h</li>
-        <li>Jeudi 20h15/23h</li>
-        <li>Vendredi 20h/23h</li>
-        <li>Samedi 9h/11h (12h)</li>
-      </ul>
     </p>
+    <ul>
+      <li>Mardi 20h/23h</li>
+      <li>Jeudi 20h15/23h</li>
+      <li>Vendredi 20h/23h</li>
+      <li>Samedi 9h/11h (12h)</li>
+    </ul>
   </div>
 
   <div class="container border-2 mx-auto p-12">

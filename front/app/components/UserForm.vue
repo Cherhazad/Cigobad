@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type {UserDto} from "shared";
 import {Category, Discount, FieldTypes, Formula, Level, Session} from "shared";
+import {useToast} from 'primevue/usetoast';
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
-
 const categories = Object.values(Category)
 const sessions = Object.values(Session)
 const formulas = Object.values(Formula)
@@ -28,11 +28,16 @@ const onCreateUser = async () => {
     method: 'POST',
     body: selectedUser.value,
     onResponseError({response}) {
-      toast.add({title: 'Error', description: response._data?.message})
+      toast.add({severity: 'error', summary: 'data fetch error', detail: response._data?.message, life: 3000})
     }
   })
   if (data) {
-    toast.add({title: 'Success', description: 'Le formulaire a bien été envoyé.', color: 'success'})
+    toast.add({
+      severity: 'success',
+      summary: 'Inscription utilisateur',
+      detail: 'Le formulaire a bien été envoyé.',
+      life: 3000
+    })
     isFormSent.value = true
   }
 }
@@ -42,11 +47,11 @@ const onEditUser = async () => {
     method: 'PATCH',
     body: selectedUser.value,
     onResponseError({response}) {
-      toast.add({title: 'Error', description: response._data?.message})
+      toast.add({severity: 'error', summary: "'Erreur lors de l'édition", detail: response._data?.message, life: 3000})
     }
   })
   if (data) {
-    toast.add({title: 'Success', description: 'Modifications enregistrées.', color: 'success'})
+    toast.add({severity: 'Success', summary: 'Modifications', detail: 'Modifications enregistrées.', life: 3000})
     isFormSent.value = true
   }
 }
@@ -67,6 +72,7 @@ const emits = defineEmits(['submitted'])
 </script>
 
 <template>
+  <Toast/>
   <CForm
       v-if="!isFormSent"
       :button-label="props.user ? 'Enregistrer' : 'Envoyer'"
