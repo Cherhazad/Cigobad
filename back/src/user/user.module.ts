@@ -11,12 +11,12 @@ import { FindByIdUserHandler } from './handlers/find-by-id/find-by-id-user.handl
 import { UpdateUserCommandHandler } from './handlers/update/update-user.handler';
 import { DeleteByIdUserHandler } from './handlers/delete-by-id/delete-by-id-user.handler';
 
-const QueryHandlers = [
-  FindAllUserHandler,
-  FindByIdUserHandler,
+const QueryHandlers = [FindAllUserHandler, FindByIdUserHandler];
+const CommandHandlers = [
+  CreateUserHandler,
+  UpdateUserCommandHandler,
   DeleteByIdUserHandler,
 ];
-const CommandHandlers = [CreateUserHandler, UpdateUserCommandHandler];
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([User])],
