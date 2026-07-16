@@ -11,6 +11,7 @@ const sidePanel = ref(false)
 const selectedUser = ref<UserDto>({} as UserDto)
 const users = ref()
 const toast = useToast()
+const modal = ref(false)
 
 const {data: fetchUsers, refresh} = await useFetch<UserDto[]>(`${api}/user`, {
   method: 'GET',
@@ -81,6 +82,11 @@ const columns = [
   }
 ]
 
+const confirmModal = (user: UserDto) => {
+  selectedUser.value = user
+  modal.value = true
+}
+
 const deleteUser = async (user: UserDto) => {
   const data = await $fetch(`${api}/user/${user.id}`, {
     method: 'DELETE',
@@ -96,6 +102,7 @@ const deleteUser = async (user: UserDto) => {
   if (data) {
     toast.add({severity: 'success', summary: 'Suppression', detail: 'Utilisateur supprimé avec succès.', life: 3000})
   }
+  modal.value = false
   refresh()
 }
 
@@ -121,7 +128,7 @@ const getItems = (user: UserDto): MenuItem[] => [
     label: 'Supprimer',
     icon: Times,
     class: 'text-red-500! dark:text-red-400!',
-    command: () => deleteUser(user)
+    command: () => confirmModal(user)
   },
 ]
 </script>
@@ -162,6 +169,21 @@ const getItems = (user: UserDto): MenuItem[] => [
       <UserForm :user="selectedUser" @submitted="onSubmitted()"/>
     </template>
   </USlideover>
+
+  <CModal
+      v-model:open="modal"
+      :title="`Delete ${ selectedUser.firstName } ${selectedUser.lastName}`"
+      description="Are you sur sure you want to delete ?"
+  >
+    <template #footer>
+      <Button @click="modal=false">
+        Cancel
+      </Button>
+      <Button severity="danger" @click="deleteUser(selectedUser)">
+        Delete
+      </Button>
+    </template>
+  </CModal>
 
 
 </template>
