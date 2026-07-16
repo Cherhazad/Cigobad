@@ -10,6 +10,7 @@ const items = computed<NavigationMenuItem[]>(() => [{
       label: 'Cigobad',
       description: 'Présentation du club',
       icon: 'fa-users',
+      to: '/club'
     },
     {
       label: "Nous rejoindre",

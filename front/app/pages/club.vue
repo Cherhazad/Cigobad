@@ -3,15 +3,9 @@
 </script>
 
 <template>
-  <Toast/>
-
-  <SessionCaroussel/>
-
+  <ClubPresentation/>
 </template>
 
 <style scoped>
-li {
-  list-style-type: circle;
-}
 
 </style>
