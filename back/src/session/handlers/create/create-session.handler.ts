@@ -11,6 +11,7 @@ export class CreateSessionHandler implements IQueryHandler<CreateSessionCommand>
   constructor(
     @Inject(ISessionRepository)
     private readonly sessionRepository: ISessionRepository,
+    @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,
   ) {}
 
@@ -33,10 +34,8 @@ export class CreateSessionHandler implements IQueryHandler<CreateSessionCommand>
     if (attendees) {
       const users: User[] = [];
       for (const attendee of attendees) {
-        const user = await this.userRepository.findById(attendee.id);
-        if (user) {
-          users.push(user);
-        }
+        if (attendee.id == null) continue;
+        users.push(await this.userRepository.findById(attendee.id));
       }
       if (users.length > 0) {
         session.attendees = users;

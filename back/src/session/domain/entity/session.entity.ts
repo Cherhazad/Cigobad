@@ -28,7 +28,7 @@ export class Session {
   @Column({ nullable: true })
   openedById: number;
 
-  @ManyToMany(() => User, (user) => user.session)
+  @ManyToMany(() => User, (user) => user.sessions)
   @JoinTable()
   attendees: User[];
 
