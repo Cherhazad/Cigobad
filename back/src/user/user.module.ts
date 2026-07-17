@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './controllers/user.controller';
-import { IUserRepository } from './domain/ports/user.repository';
-import { MySqlUserRepository } from './repositories/mysql-user.repository';
-import { User } from './domain/entities/user.entity';
+import { IUserRepository } from './domain/port/user.repository';
+import { MySqlUserRepository } from './repository/mysql-user.repository';
+import { User } from './domain/entity/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FindAllUserHandler } from './handlers/find-all/find-all-user.handler';
 import { CqrsModule } from '@nestjs/cqrs';

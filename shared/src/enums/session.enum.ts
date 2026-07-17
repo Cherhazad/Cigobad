@@ -1,4 +1,4 @@
-export enum Session {
+export enum SessionEnum {
     LUNDI = 'Lundi 20h - 23h',
     MARDI = 'Mardi 20h - 23h',
     JEUDI = 'Jeudi 20h15 - 23h',

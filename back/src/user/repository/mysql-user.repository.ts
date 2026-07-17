@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IUserRepository } from '../domain/ports/user.repository';
-import { User } from '../domain/entities/user.entity';
+import { IUserRepository } from '../domain/port/user.repository';
+import { User } from '../domain/entity/user.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 

@@ -3,15 +3,20 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category, Discount, Formula, Level, Session } from 'shared';
+import { Category, Discount, Formula, Level, Role, SessionEnum } from 'shared';
+import { Session } from '../../../session/domain/entity/session.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  role: Role;
 
   @Column()
   firstName: string;
@@ -42,10 +47,10 @@ export class User {
 
   @Column({
     type: 'set',
-    enum: Session,
+    enum: SessionEnum,
     nullable: true,
   })
-  session: Session[];
+  session: SessionEnum[];
 
   @Column({ nullable: true })
   formula: Formula;
@@ -70,4 +75,7 @@ export class User {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   delete_at: Date | null;
+
+  @ManyToMany(() => Session, (session) => session.attendees)
+  sessions: Session[];
 }

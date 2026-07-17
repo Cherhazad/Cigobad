@@ -1,4 +1,4 @@
-import { User } from '../entities/user.entity';
+import { User } from '../entity/user.entity';
 import { UpdateResult } from 'typeorm';
 
 export interface IUserRepository {
