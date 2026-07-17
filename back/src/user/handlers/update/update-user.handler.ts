@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserCommand } from '../../query-command/commands/update-user.command';
 import { BadRequestException, Inject } from '@nestjs/common';
-import { IUserRepository } from '../../domain/ports/user.repository';
-import { User } from '../../domain/entities/user.entity';
+import { IUserRepository } from '../../domain/port/user.repository';
+import { User } from '../../domain/entity/user.entity';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserCommandHandler implements ICommandHandler<UpdateUserCommand> {

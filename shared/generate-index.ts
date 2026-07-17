@@ -13,7 +13,10 @@ function generateIndex(dir: string): void {
             generateIndex(fullPath);
             exports.push(`export * from './${file}';`);
         } else if (file.endsWith('.ts') && file !== 'index.ts') {
-            exports.push(`export * from './${file.replace('.ts', '')}';`);
+            const content = fs.readFileSync(fullPath, 'utf-8').trim();
+            if (content.length > 0) {
+                exports.push(`export * from './${file.replace('.ts', '')}';`);
+            }
         }
     }
 

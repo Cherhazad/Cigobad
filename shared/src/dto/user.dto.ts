@@ -1,4 +1,4 @@
-import {Category, Discount, Formula, Level, Session} from "../enums";
+import {Category, Discount, Formula, Level, SessionEnum} from "../enums";
 
 export class UserDto {
     id?: number;
@@ -10,7 +10,7 @@ export class UserDto {
     email!: string;
     phoneNumber!: string;
     category!: Category;
-    session!: Session[];
+    session!: SessionEnum[];
     formula!: Formula;
     discount!: Discount;
     level!: Level;

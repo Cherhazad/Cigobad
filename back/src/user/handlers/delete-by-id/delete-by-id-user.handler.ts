@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteByIdUserCommand } from '../../query-command/commands/delete-by-id-user.command';
-import { IUserRepository } from '../../domain/ports/user.repository';
+import { IUserRepository } from '../../domain/port/user.repository';
 import { Inject } from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
 

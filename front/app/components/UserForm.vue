@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type {UserDto} from "shared";
-import {Category, Discount, FieldTypes, Formula, Level, Session} from "shared";
+import {Category, Discount, FieldTypes, Formula, Level, SessionEnum} from "shared";
 import {useToast} from 'primevue/usetoast';
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
 const categories = Object.values(Category)
-const sessions = Object.values(Session)
+const sessions = Object.values(SessionEnum)
 const formulas = Object.values(Formula)
 const discounts = Object.values(Discount)
 const levels = Object.values(Level)

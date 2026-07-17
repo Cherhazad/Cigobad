@@ -11,12 +11,15 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.json",
-    "dev": "tsup src/index.ts --format esm,cjs --dts --watch --tsconfig tsconfig.json",
+    "build": "npm run barrels && tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.json",
+    "dev": "concurrently \"npm run watch:barrels\" \"npm run watch:tsup\"",
+    "watch:barrels": "nodemon --watch src --ext ts --ignore \"src/**/index.ts\" --exec \"npm run barrels\"",
+    "watch:tsup": "tsup src/index.ts --format esm,cjs --dts --watch --tsconfig tsconfig.json",
     "barrels": "ts-node generate-index.ts"
   },
   "devDependencies": {
     "@types/node": "^25.9.4",
+    "concurrently": "^10.0.3",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
