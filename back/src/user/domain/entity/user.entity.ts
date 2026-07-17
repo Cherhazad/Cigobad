@@ -22,6 +22,9 @@ export class User {
   role: Role;
 
   @Column()
+  role: Role;
+
+  @Column()
   firstName: string;
 
   @Column()
