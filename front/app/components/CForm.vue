@@ -14,6 +14,10 @@ defineProps({
   buttonLabel: {
     type: String,
     default: 'Submit',
+  },
+  buttonClass: {
+    type: String,
+    default: ''
   }
 })
 
@@ -32,10 +36,10 @@ defineEmits(['submit'])
 
     <slot/>
 
-    <div v-if="hasFooter">
-      <UButton @click="form?.submit()">
+    <div v-if="hasFooter" class="flex justify-end pt-2">
+      <Button :class="buttonClass" @click="form?.submit()">
         {{ buttonLabel }}
-      </UButton>
+      </Button>
     </div>
   </UForm>
 </template>

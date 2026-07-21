@@ -15,11 +15,14 @@ defineProps({
   items: {
     type: Array as PropType<MenuItem[]>,
     default: () => []
+  },
+  placeholder: {
+    type: String,
+    default: ''
   }
 })
 const model = defineModel()
 const emit = defineEmits(["update:modelValue"])
-
 </script>
 
 <template>
@@ -30,6 +33,7 @@ const emit = defineEmits(["update:modelValue"])
         v-bind="$attrs"
         type="string"
         class="w-full"
+        :placeholder="placeholder"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -39,6 +43,7 @@ const emit = defineEmits(["update:modelValue"])
         type="email"
         v-bind="$attrs"
         class="w-full"
+        :placeholder="placeholder"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -46,7 +51,11 @@ const emit = defineEmits(["update:modelValue"])
         v-if="type === FieldTypes.date"
         v-model="model"
         show-week
-        class="max-w-full"
+        :placeholder="placeholder"
+        class="w-full"
+        date-format="dd-mm-yy"
+        append-to="self"
+        @update:model-value="emit('update:modelValue', $event)"
     />
 
     <UInput
@@ -55,6 +64,7 @@ const emit = defineEmits(["update:modelValue"])
         type="tel"
         v-bind="$attrs"
         class="w-full"
+        :placeholder="placeholder"
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -81,6 +91,7 @@ const emit = defineEmits(["update:modelValue"])
         v-if="type === FieldTypes.textarea"
         v-model="model"
         v-bind="$attrs"
+        :placeholder="placeholder"
         class="w-full"
     />
 
@@ -89,13 +100,16 @@ const emit = defineEmits(["update:modelValue"])
         v-model="model"
         v-bind="$attrs"
         class="w-full"
+        @update:model-value="emit('update:modelValue', $event)"
     />
 
     <UInputNumber
         v-if="type === FieldTypes.number"
         v-model="model"
+        :placeholder="placeholder"
         v-bind="$attrs"
         class="w-full"
+        @update:model-value="emit('update:modelValue', $event)"
     />
 
   </UFormField>

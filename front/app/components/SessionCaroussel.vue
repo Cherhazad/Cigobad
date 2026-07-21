@@ -21,6 +21,7 @@ const onEditSession = () => {
 }
 
 const onSubmitted = async () => {
+  console.log('submitted')
   /*refresh()*/
   /*toast.add({severity: 'success', summary: 'Modifications', detail: 'Modifications enregistrées', life: 3000});*/
   sidePanel.value = false
@@ -59,8 +60,8 @@ const levels = (level: Level) => {
 
       <template #header>
         <div class="flex justify-end gap-2 m-4">
-          <Button>
-            M'inscrire
+          <Button severity="secondary" @click="sidePanel = true">
+            Créer
           </Button>
           <CDropdownMenu :menu-items="items" menu-icon="i-lucide-ellipsis-vertical"/>
         </div>
@@ -85,20 +86,24 @@ const levels = (level: Level) => {
           </div>
           <div class="flex items-center gap-2">
             <span><b>Gymnase ouvert par: </b> Romain</span>
+            <Button class="ml-auto">
+              Participer
+            </Button>
           </div>
+
         </div>
       </template>
     </Card>
   </div>
 
-  <USlideover
+  <CModal
       v-model:open="sidePanel"
-      title="Éditer les informations"
+      title="Créer une session"
   >
-    <template #body>
+    <template #content>
       <SessionForm @submitted="onSubmitted()"/>
     </template>
-  </USlideover>
+  </CModal>
 
 </template>
 

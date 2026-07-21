@@ -6,7 +6,7 @@ const levels = Object.values(Level)
 const props = defineProps({
   session: {
     type: SessionDto,
-    default: () => ({}),
+    default: null,
   }
 })
 
@@ -23,12 +23,9 @@ const handleSubmit = async () => {
 }
 
 const emits = defineEmits(['submitted'])
-
-
 </script>
 
 <template>
-
   <CForm
       v-if="!isFormSent"
       :button-label="props.session ? 'Enregistrer' : 'Créer'"
@@ -38,25 +35,35 @@ const emits = defineEmits(['submitted'])
     <CFormField
         v-model="selectedSession.name"
         label="Titre"
+        placeholder="Lundi..."
         :type="FieldTypes.string"
     />
 
     <CFormField
         v-model="selectedSession.level"
         label="Niveau"
-        :type="FieldTypes['select-multiple']"
+        :type="FieldTypes.select"
         :items="levels"
     />
 
     <CFormField
         v-model="selectedSession.hours"
         label="Horaires"
+        placeholder="18:00 - 20:00"
         :type="FieldTypes.string"
     />
 
     <CFormField
-        v-model="selectedSession.openedById"
+        v-model="selectedSession.date"
+        label="Date"
+        placeholder="dd/mm/yyyy"
+        :type="FieldTypes.date"
+    />
+
+    <CFormField
+        v-model="selectedSession.openedBy"
         label="Gymnase ouvert par"
+        placeholder="Jules"
         :type="FieldTypes.string"
     />
 

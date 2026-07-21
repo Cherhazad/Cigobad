@@ -160,14 +160,14 @@ const getItems = (user: UserDto): MenuItem[] => [
     </CTable>
   </div>
 
-  <USlideover
+  <CModal
       v-model:open="sidePanel"
       title="Éditer les informations"
   >
-    <template #body>
+    <template #content>
       <UserForm :user="selectedUser" @submitted="onSubmitted()"/>
     </template>
-  </USlideover>
+  </CModal>
 
   <CModal
       v-model:open="modal"
