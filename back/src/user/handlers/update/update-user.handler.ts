@@ -5,7 +5,7 @@ import { IUserRepository } from '../../domain/port/user.repository';
 import { User } from '../../domain/entity/user.entity';
 
 @CommandHandler(UpdateUserCommand)
-export class UpdateUserCommandHandler implements ICommandHandler<UpdateUserCommand> {
+export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(
     @Inject(IUserRepository) private userRepository: IUserRepository,
   ) {}

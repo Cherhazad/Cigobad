@@ -15,7 +15,7 @@ const toggleDark = () => {
 <template>
   <ClientOnly v-if="!colorMode?.forced">
     <UTooltip
-        :delay-duration="0" `
+        :delay-duration="0"
         :text="`Switch to ${isDark ? 'light' : 'dark'} mode`"
     >
       <UButton

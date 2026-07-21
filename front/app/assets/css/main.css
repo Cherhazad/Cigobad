@@ -1,2 +1,13 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+@variant dark (&:where(.dark, .dark *));
+
+.dark {
+    --p-datatable-header-background: transparent;
+    --p-datatable-body-background: transparent;
+    --p-datatable-row-background: transparent;
+    --p-datatable-header-cell-background: transparent;
+    --p-datatable-body-cell-background: transparent;
+    --p-datatable-footer-background: transparent;
+}

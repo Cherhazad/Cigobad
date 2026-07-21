@@ -1,25 +1,30 @@
 <script setup lang="ts">
-import {FieldTypes, Level, SessionDto} from "shared";
+import type {SessionDto} from "shared";
+import {FieldTypes, Level} from "shared";
 
 const levels = Object.values(Level)
 
 const props = defineProps({
   session: {
-    type: SessionDto,
+    type: Object as PropType<SessionDto>,
     default: null,
   }
 })
 
-const isFormSent = ref<boolean>(false)
 const selectedSession = ref<SessionDto>(props.session ? {...props.session} : {} as SessionDto)
 
-watch(() => props.session, (newSession: SessionDto) => {
-  if (newSession) selectedSession.value = {...newSession}
-}, {deep: true})
+watch(
+    () => props.session,
+    (newSession) => {
+      selectedSession.value = newSession
+          ? {...newSession}
+          : {} as SessionDto
+    },
+    {immediate: true}
+)
 
 const handleSubmit = async () => {
-  /*await onSubmit()*/
-  emits('submitted')
+  emits('submitted', selectedSession.value)
 }
 
 const emits = defineEmits(['submitted'])
@@ -27,8 +32,7 @@ const emits = defineEmits(['submitted'])
 
 <template>
   <CForm
-      v-if="!isFormSent"
-      :button-label="props.session ? 'Enregistrer' : 'Créer'"
+      :button-label="selectedSession.id ? 'Enregistrer' : 'Créer'"
       :item="selectedSession"
       @submit="handleSubmit"
   >

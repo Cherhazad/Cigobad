@@ -16,7 +16,8 @@ export class CreateSessionHandler implements IQueryHandler<CreateSessionCommand>
   ) {}
 
   async execute(command: CreateSessionCommand): Promise<Session> {
-    const { name, level, hours, openedBy, attendees } = command.sessionDto;
+    const { name, level, hours, openedBy, attendees, date } =
+      command.sessionDto;
 
     const session = new Session();
     if (name) {
@@ -30,6 +31,9 @@ export class CreateSessionHandler implements IQueryHandler<CreateSessionCommand>
     }
     if (openedBy) {
       session.openedBy = openedBy;
+    }
+    if (date) {
+      session.date = date;
     }
     if (attendees) {
       const users: User[] = [];

@@ -8,6 +8,10 @@ const props = defineProps({
   columns: {
     type: Array as PropType<{ field: string, header: string }[]>,
     required: true,
+  },
+  rowClass: {
+    type: String,
+    default: 'dark:border dark: border-gray-300',
   }
 })
 
@@ -23,7 +27,11 @@ watch(props.items, (newVal, oldVal) => {
 
 <template>
   <DataTable
-      :value="items" table-style="min-width: 50rem" data-key="id">
+      :value="items"
+      table-style="min-width: 50rem"
+      data-key="id"
+      class="club-table"
+  >
     <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header">
       <template #body="{data}">
         <slot :name="`item-${col.field}`" :data="data">
@@ -43,4 +51,7 @@ watch(props.items, (newVal, oldVal) => {
 
 <style scoped>
 
+html.dark .club-table {
+  --p-datatable-body-cell-border-color: rgb(75 85 99);
+}
 </style>

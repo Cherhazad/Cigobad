@@ -50,11 +50,10 @@ const emit = defineEmits(["update:modelValue"])
     <DatePicker
         v-if="type === FieldTypes.date"
         v-model="model"
-        show-week
         :placeholder="placeholder"
         class="w-full"
         date-format="dd-mm-yy"
-        append-to="self"
+        append-to="body"
         @update:model-value="emit('update:modelValue', $event)"
     />
 

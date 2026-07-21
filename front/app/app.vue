@@ -4,6 +4,7 @@ import MyHeader from "./components/MyHeader.vue";
 
 <template>
   <UApp>
+    <Toast/>
     <NuxtLayout>
       <MyHeader/>
       <NuxtPage/>

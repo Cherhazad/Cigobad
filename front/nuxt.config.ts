@@ -11,7 +11,10 @@ export default defineNuxtConfig({
         global: true,
         dirs: ['~/components']
     },
-    css: ['~/assets/css/main.css'],
+    css: [
+        '~/assets/css/main.css',
+        'primeicons/primeicons.css'
+    ],
 
     ssr: false,
 
@@ -20,6 +23,10 @@ export default defineNuxtConfig({
             apiBase: 'http://localhost:3008',
             PRIMEUI_LICENSE: process.env.NUXT_PUBLIC_PRIMEUI_LICENSE
         }
+    },
+
+    colorMode: {
+        classSuffix: ''
     },
 
     postcss: {
@@ -54,7 +61,10 @@ export default defineNuxtConfig({
     primevue: {
         options: {
             theme: {
-                preset: Aura
+                preset: Aura,
+                options: {
+                    darkModeSelector: '.dark'
+                }
             }
         }
     },

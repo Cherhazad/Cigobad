@@ -8,13 +8,13 @@ import { FindAllUserHandler } from './handlers/find-all/find-all-user.handler';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateUserHandler } from './handlers/create/create-user.handler';
 import { FindByIdUserHandler } from './handlers/find-by-id/find-by-id-user.handler';
-import { UpdateUserCommandHandler } from './handlers/update/update-user.handler';
+import { UpdateUserHandler } from './handlers/update/update-user.handler';
 import { DeleteByIdUserHandler } from './handlers/delete-by-id/delete-by-id-user.handler';
 
 const QueryHandlers = [FindAllUserHandler, FindByIdUserHandler];
 const CommandHandlers = [
   CreateUserHandler,
-  UpdateUserCommandHandler,
+  UpdateUserHandler,
   DeleteByIdUserHandler,
 ];
 

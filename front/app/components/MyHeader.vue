@@ -17,21 +17,6 @@ const items = computed<NavigationMenuItem[]>(() => [{
       description: "S'inscrire au club",
       icon: 'fa-users',
       to: '/subscription'
-    },
-    {
-      label: 'Grille tarifaire',
-      description: "Saison 2026-2027",
-      icon: 'fa-users',
-    },
-    {
-      label: 'Conseils & Tutoriels',
-      description: "Conseils & Tutoriels au club",
-      icon: 'fa-users',
-    },
-    {
-      label: 'Partenaires',
-      description: "Les partenaires du club",
-      icon: 'fa-users',
     }
   ]
 }
