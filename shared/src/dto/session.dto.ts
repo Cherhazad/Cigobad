@@ -6,6 +6,7 @@ export class SessionDto {
     name!: string;
     level!: Level;
     hours!: string;
-    openedById!: number;
+    date!: Date;
+    openedBy!: string;
     attendees!: UserDto[];
 }

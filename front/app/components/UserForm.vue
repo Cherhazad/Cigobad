@@ -1,73 +1,34 @@
 <script setup lang="ts">
 import type {UserDto} from "shared";
 import {Category, Discount, FieldTypes, Formula, Level, SessionEnum} from "shared";
-import {useToast} from 'primevue/usetoast';
 
-const config = useRuntimeConfig()
-const api = config.public.apiBase
 const categories = Object.values(Category)
 const sessions = Object.values(SessionEnum)
 const formulas = Object.values(Formula)
 const discounts = Object.values(Discount)
 const levels = Object.values(Level)
 
-const props = defineProps<{
-  user?: UserDto
-}>()
+const props = defineProps({
+  user: {
+    type: Object as PropType<UserDto>,
+    default: null
+  },
+  isFormSent: {
+    type: Boolean,
+    default: false
+  }
+})
 
 const selectedUser = ref<UserDto>(props.user ? {...props.user} : {} as UserDto)
-const isFormSent = ref<boolean>(false)
-const toast = useToast()
 
 watch(() => props.user, (newUser) => {
   if (newUser) selectedUser.value = {...newUser}
 }, {deep: true})
 
-const onCreateUser = async () => {
-  const data = await $fetch(`${api}/user`, {
-    method: 'POST',
-    body: selectedUser.value,
-    onResponseError({response}) {
-      toast.add({severity: 'error', summary: 'data fetch error', detail: response._data?.message, life: 3000})
-    }
-  })
-  if (data) {
-    toast.add({
-      severity: 'success',
-      summary: 'Inscription utilisateur',
-      detail: 'Le formulaire a bien été envoyé.',
-      life: 3000
-    })
-    isFormSent.value = true
-  }
-}
-
-const onEditUser = async () => {
-  const data = await $fetch(`${api}/user/${selectedUser.value.id}`, {
-    method: 'PATCH',
-    body: selectedUser.value,
-    onResponseError({response}) {
-      toast.add({severity: 'error', summary: "'Erreur lors de l'édition", detail: response._data?.message, life: 3000})
-    }
-  })
-  if (data) {
-    toast.add({severity: 'Success', summary: 'Modifications', detail: 'Modifications enregistrées.', life: 3000})
-    isFormSent.value = true
-  }
-}
-
-const onSubmit = async () => {
-  if (props.user) {
-    await onEditUser()
-  } else {
-    await onCreateUser()
-  }
-}
-
 const handleSubmit = async () => {
-  await onSubmit()
-  emits('submitted')
+  emits('submitted', selectedUser.value)
 }
+
 const emits = defineEmits(['submitted'])
 </script>
 
@@ -100,6 +61,7 @@ const emits = defineEmits(['submitted'])
     <CFormField
         v-model="selectedUser.birthDate"
         label="Date de naissance"
+        required
         :type="FieldTypes.date"
     />
 

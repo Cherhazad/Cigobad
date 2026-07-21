@@ -28,6 +28,7 @@
     "nuxt": "^4.4.6",
     "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^3.0.4",
+    "primeicons": "^8.0.0",
     "primevue": "^5.0.0-rc.1",
     "shared": "file:../shared",
     "storybook": "~9.0.5",

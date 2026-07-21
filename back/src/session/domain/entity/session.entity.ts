@@ -26,7 +26,10 @@ export class Session {
   hours: string;
 
   @Column({ nullable: true })
-  openedById: number;
+  openedBy: string;
+
+  @Column()
+  date: Date;
 
   @ManyToMany(() => User, (user) => user.sessions)
   @JoinTable()

@@ -1,15 +1,21 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { SessionDto } from 'shared';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateSessionCommand } from '../query-command/command/create-session.command';
 import { FindByIdSessionQuery } from '../query-command/query/find-by-id-session.query';
+import { FindAllSessionQuery } from '../query-command/query/find-all-session.query';
+import { UpdateResult } from 'typeorm';
+import { UpdateSessionCommand } from '../query-command/command/update-session.command';
+import { DeleteByIdSessionCommand } from '../query-command/command/delete-by-id-session.command';
 
 @Controller('session')
 export class SessionController {
@@ -18,10 +24,10 @@ export class SessionController {
     private readonly queryBus: QueryBus,
   ) {}
 
-  /*  @Get()
+  @Get()
   findAll(): Promise<SessionDto[]> {
     return this.queryBus.execute(new FindAllSessionQuery());
-  }*/
+  }
 
   @Post()
   createSession(@Body() sessionDto: SessionDto): Promise<SessionDto> {
@@ -33,7 +39,7 @@ export class SessionController {
     return this.queryBus.execute(new FindByIdSessionQuery(id));
   }
 
-  /*  @Patch(':id')
+  @Patch(':id')
   updateSession(@Body() sessionDto: SessionDto): Promise<SessionDto> {
     return this.commandBus.execute(new UpdateSessionCommand(sessionDto));
   }
@@ -41,5 +47,5 @@ export class SessionController {
   @Delete(':id')
   deleteSession(@Param('id', ParseIntPipe) id: number): Promise<UpdateResult> {
     return this.commandBus.execute(new DeleteByIdSessionCommand(id));
-  }*/
+  }
 }

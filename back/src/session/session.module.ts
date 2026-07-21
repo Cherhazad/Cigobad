@@ -10,9 +10,16 @@ import { SessionController } from './controllers/session.controller';
 import { MySqlUserRepository } from '../user/repository/mysql-user.repository';
 import { IUserRepository } from '../user/domain/port/user.repository';
 import { User } from '../user/domain/entity/user.entity';
+import { FindAllSessionHandler } from './handlers/find-all/find-all-session.handler';
+import { UpdateSessionHandler } from './handlers/update/update-session.handler';
+import { DeleteByIdSessionHandler } from './handlers/delete-by-id/delete-by-id-session.handler';
 
-const QueryHandlers = [FindByIdSessionHandler];
-const CommandHandlers = [CreateSessionHandler];
+const QueryHandlers = [FindByIdSessionHandler, FindAllSessionHandler];
+const CommandHandlers = [
+  CreateSessionHandler,
+  UpdateSessionHandler,
+  DeleteByIdSessionHandler,
+];
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([Session, User])],

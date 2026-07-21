@@ -4,6 +4,7 @@ import MyHeader from "./components/MyHeader.vue";
 
 <template>
   <UApp>
+    <Toast/>
     <NuxtLayout>
       <MyHeader/>
       <NuxtPage/>
@@ -11,6 +12,14 @@ import MyHeader from "./components/MyHeader.vue";
   </UApp>
 </template>
 
-<style scoped>
+<style>
+/*pour permettre au datepicker de primevue d'être clickable dans le slideover ou la modale de nuxt ui.*/
+.p-datepicker-panel {
+  pointer-events: all !important;
+  z-index: 99999 !important;
+}
 
+.p-datepicker-day {
+  pointer-events: all !important;
+}
 </style>
