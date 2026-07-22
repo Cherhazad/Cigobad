@@ -48,13 +48,12 @@ const emit = defineEmits(["update:modelValue"])
         @update:model-value="emit('update:modelValue', $event)"
     />
 
-    <DatePicker
+    <UCalendar
         v-if="type === FieldTypes.date"
         v-model="model"
-        :placeholder="placeholder"
         class="w-full"
-        date-format="dd-mm-yy"
-        append-to="body"
+        week-starts-on="1"
+        locale="fr"
         @update:model-value="emit('update:modelValue', $event)"
     />
 

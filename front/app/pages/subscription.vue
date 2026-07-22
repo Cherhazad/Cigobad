@@ -28,7 +28,10 @@ const onCreateUser = async (user: UserDto) => {
 </script>
 
 <template>
-  <div class="flex min-h-screen items-center justify-center">
+  <div class="flex flex-col min-h-screen items-center justify-center">
+    <h1 class="text-3xl mt-2 font-extrabold text-center text-gray-800 dark:text-white mb-6 tracking-tight">
+      NOUS REJOINDRE
+    </h1>
     <div
         class="w-2/3 mx-auto flex max-w-sm items-center rounded-xl bg-white p-12 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
       <UserForm :is-form-sent=isFormSent @submitted="(user) => onCreateUser(user)"/>
