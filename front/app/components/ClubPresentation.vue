@@ -172,6 +172,11 @@ const getItems = (user: UserDto): MenuItem[] => [
 
     <div
         class="max-w-7xl mx-auto rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 p-10">
+      <div>
+        <h3 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-6 tracking-tight">
+          Adhérents du club
+        </h3>
+      </div>
       <CTable :items="users" :columns="columns">
         <template #item-birthDate="{ data }">
           {{ new Date(data.birthDate).toLocaleDateString('fr-FR') }}

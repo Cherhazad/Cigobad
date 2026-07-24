@@ -2,6 +2,8 @@
 
 import {FieldTypes} from "shared";
 import type {MenuItem} from "primevue/menuitem";
+import {calendarDateToDate, dateToCalendarDate} from "~~/utils/date";
+import type {CalendarDate} from "@internationalized/date";
 
 defineProps({
   label: {
@@ -21,6 +23,16 @@ defineProps({
     default: ''
   }
 })
+
+const dateModel = computed({
+  get() {
+    return model.value ? dateToCalendarDate(model.value) : undefined
+  },
+  set(value: CalendarDate | undefined) {
+    model.value = value ? calendarDateToDate(value) : undefined
+  }
+})
+
 const model = defineModel()
 const emit = defineEmits(["update:modelValue"])
 </script>
@@ -47,14 +59,12 @@ const emit = defineEmits(["update:modelValue"])
         @update:model-value="emit('update:modelValue', $event)"
     />
 
-    <DatePicker
+    <UCalendar
         v-if="type === FieldTypes.date"
-        v-model="model"
-        :placeholder="placeholder"
+        v-model="dateModel"
         class="w-full"
-        date-format="dd-mm-yy"
-        append-to="body"
-        @update:model-value="emit('update:modelValue', $event)"
+        :week-starts-on="1"
+        locale="fr"
     />
 
     <UInput

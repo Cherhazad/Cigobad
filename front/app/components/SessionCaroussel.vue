@@ -1,24 +1,41 @@
 <script setup lang="ts">
 import {Pencil, Times} from "@primeicons/vue";
-import type {Level, SessionDto} from "shared";
+import {Level, type SessionDto, type UserDto} from "shared";
 import type {MenuItem} from "primevue/menuitem";
 import {useToast} from "primevue/usetoast";
+import {formatLevel} from "~~/utils/formatLevel";
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
 const toast = useToast()
 
-const modal = ref(false)
+const deleteModal = ref(false)
 const formModal = ref(false)
+const sessionSubsModal = ref(false)
+const sessionAttendeesModal = ref(false)
 const sessions = ref<SessionDto[] | undefined>([])
-const selectedSession = ref<SessionDto>()
+const selectedSession = ref<SessionDto | undefined>()
+const users = ref<{ label: string, value: UserDto }[]>([])
+const attendeeRef = ref<UserDto>()
 
 const {data: fetchSessions, refresh} = await useFetch<SessionDto[]>(`${api}/session`, {
   method: 'GET',
 })
 
+const {data: fetchUsers} = await useFetch<UserDto[]>(`${api}/user`, {
+  method: 'GET',
+})
+
 onMounted(async () => {
   sessions.value = fetchSessions.value
+  if (fetchUsers.value && fetchUsers.value.length > 0) {
+    users.value = fetchUsers.value.map((user: UserDto) => {
+      return {
+        label: user.lastName.toUpperCase() + ' ' + user.firstName,
+        value: user
+      }
+    })
+  }
 })
 
 watch(fetchSessions, (newValue, oldValue) => {
@@ -68,13 +85,42 @@ const onEditSession = async (session: SessionDto) => {
   }
 }
 
-const onDeleteSession = async (session: SessionDto) => {
+const onParticipateSession = async (session: SessionDto, attendee: { label: string; value: UserDto }) => {
   const data = await $fetch(`${api}/session/${session.id}`, {
+    method: 'PATCH',
+    body: {
+      id: session.id,
+      attendees: [attendee.value]
+    },
+    onResponseError({response}) {
+      toast.add({
+        severity: 'error',
+        summary: "Erreur lors de l'inscription",
+        detail: response._data?.message,
+        life: 3000
+      })
+    }
+  })
+  if (data) {
+    toast.add({
+      severity: 'success',
+      summary: 'Inscription',
+      detail: 'Votre inscription a bien été enregistrée.',
+      life: 3000
+    })
+    sessionSubsModal.value = false
+    attendeeRef.value = undefined
+    await refresh()
+  }
+}
+
+const onDeleteSession = async (session: SessionDto) => {
+  const data = await $fetch(`${api}/session/${session?.id}`, {
     method: 'DELETE',
     onResponseError({response}) {
       toast.add({
         severity: 'error',
-        summary: 'Erreur lors de la suppresion',
+        summary: 'Erreur lors de la suppression',
         detail: response._data?.message,
         life: 3000
       })
@@ -84,8 +130,8 @@ const onDeleteSession = async (session: SessionDto) => {
     toast.add({severity: 'success', summary: 'Suppression', detail: 'Session supprimée avec succès.', life: 3000})
     selectedSession.value = undefined
   }
-  modal.value = false
-  refresh()
+  deleteModal.value = false
+  await refresh()
 }
 
 const onSubmit = async (session: SessionDto) => {
@@ -102,7 +148,7 @@ const onSubmit = async (session: SessionDto) => {
 
 const confirmModal = (session: SessionDto) => {
   selectedSession.value = session
-  modal.value = true
+  deleteModal.value = true
 }
 
 const getItems = (session: SessionDto): MenuItem[] => [
@@ -120,25 +166,58 @@ const getItems = (session: SessionDto): MenuItem[] => [
   },
 ]
 
-const levelLabels = (level: Level) => {
+const onParticipate = (session: SessionDto) => {
+  selectedSession.value = session
+  sessionSubsModal.value = true
+}
+
+const getAvailableUsers = (session: SessionDto) => {
+  if (!session?.attendees?.length) return users.value
+
+  const attendeeIds = session.attendees.map((a) => a.id)
+  return users.value.filter((user) => !attendeeIds.includes(user.value.id))
+}
+
+const getLevelColor = (level: Level) => {
   switch (level) {
-    case 'Confirme':
-      return 'confirmé';
-    case 'Debutant':
-      return 'débutant';
-    case 'Intermediaire':
-      return 'intermédiaire';
+    case Level.Debutant:
+      return 'info'
+    case Level.Intermediaire:
+      return 'warn'
+    case Level.Confirme:
+      return 'danger'
+    default:
+      return 'secondary'
   }
+}
+
+const columns = [
+  {
+    field: 'firstName',
+    header: 'Prénom',
+  },
+  {
+    field: 'lastName',
+    header: 'Nom'
+  }
+]
+
+const onSeeAttendees = (session: SessionDto) => {
+  selectedSession.value = session
+  sessionAttendeesModal.value = true
 }
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
+  <div class="flex flex-col items-center mt-2">
+    <h1 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6 tracking-tight">
+      SESSIONS DE BADMINTON
+    </h1>
     <Card v-for="item in sessions" :key="item.id" class="w-3/5 overflow-hidden mt-4">
 
       <template #header>
         <div class="flex justify-end gap-2 m-4">
-          <Button v-if="sessions.indexOf(item) === 0" severity="secondary" @click="formModal = true">
+          <Button v-if="sessions?.indexOf(item) === 0" severity="secondary" @click="onOpenCreateModal">
             Créer
           </Button>
           <CDropdownMenu :menu-items="getItems(item)" menu-icon="i-lucide-ellipsis-vertical"/>
@@ -146,25 +225,47 @@ const levelLabels = (level: Level) => {
       </template>
 
       <template #title>
-        <span class="font-bold text-5xl">{{ item?.name }}</span>
+        <div class="flex gap-4 items-end">
+          <span class="font-bold text-5xl">{{ item?.name }} </span>
+        </div>
+
       </template>
 
       <template #subtitle>
         <div class="flex items-center gap-2">
-          <Tag severity="info" :value="`Niveau ${levelLabels(item?.level)}`"/>
-          <Tag severity="success" value="Disponible"/>
+          <Tag :severity="getLevelColor(item.level)" :value="`Niveau ${formatLevel(item.level).toLowerCase()}`"/>
         </div>
       </template>
 
       <template #content>
-        <div class="space-y-4">
-          <span class="font-bold text-xl">{{ item?.hours }}</span>
+        <div class="space-y-2 flex flex-col">
+          <div v-if="item.date" class="flex items-center gap-2">
+            <UIcon name="i-lucide-calendar"/>
+            <span class="font-bold text-xl">{{
+                new Date(item.date).toLocaleDateString('fr-FR')
+              }}</span>
+          </div>
           <div class="flex items-center gap-2">
-            <span><b>Nombre d'inscrits: </b> 23/36</span>
+            <UIcon name="i-lucide-clock"/>
+            <span class="font-bold text-xl"> {{
+                item?.hours
+              }}</span>
+          </div>
+          <div class="flex items-center gap-2 sm:flex-wrap">
+            <span><b>Nombre d'inscrits: </b> {{ item.attendees.length }}/36</span>
+            <Button
+                v-tooltip="'Voir les participants'"
+                icon="pi pi-eye"
+                severity="secondary"
+                @click="onSeeAttendees(item)"/>
+            <Tag
+                :severity="`${item.attendees.length >= 36 ? 'danger' : 'success'}`"
+                :value="`${item.attendees.length >= 36 ? 'Complet' : 'Disponible'}`"
+            />
           </div>
           <div class="flex items-center gap-2">
             <span><b>Gymnase ouvert par: </b> {{ item?.openedBy }}</span>
-            <Button class="ml-auto">
+            <Button class="ml-auto" @click="onParticipate(item)">
               Participer
             </Button>
           </div>
@@ -174,7 +275,7 @@ const levelLabels = (level: Level) => {
     </Card>
 
     <Card
-        v-if="sessions.length === 0"
+        v-if="sessions?.length === 0"
         class="empty-card">
       <template #header>
         <div class="flex flex-col items-center gap-3 pt-8 px-6">
@@ -205,7 +306,6 @@ const levelLabels = (level: Level) => {
   <CModal
       v-model:open="formModal"
       :title="selectedSession ? 'Éditer une session' : 'Créer une session'"
-      :dismissible="false"
   >
     <template #content>
       <SessionForm :session="selectedSession" @submitted="onSubmit"/>
@@ -213,17 +313,49 @@ const levelLabels = (level: Level) => {
   </CModal>
 
   <CModal
-      v-model:open="modal"
+      v-model:open="deleteModal"
       title="Supprimer la session"
       description="Êtes-vous sûr.e de vouloir continuer ?"
   >
     <template #footer>
-      <Button @click="modal=false">
+      <Button @click="deleteModal=false">
         Annuler
       </Button>
       <Button severity="danger" @click="onDeleteSession(selectedSession)">
         Supprimer
       </Button>
+    </template>
+  </CModal>
+
+  <CModal
+      v-model:open="sessionSubsModal"
+      :title="`S'inscrire ${selectedSession?.name} ${selectedSession?.date ? new Date(selectedSession.date).toLocaleDateString('fr-FR') : ''} à ${selectedSession?.hours} ?`"
+      description="Vous êtes sur le point de vous inscrire 🏸"
+  >
+    <template #content>
+      <CFormField
+          v-model="attendeeRef"
+          label="Adhérents"
+          type="select"
+          :items="getAvailableUsers(selectedSession)"
+      />
+    </template>
+    <template #footer>
+      <Button @click="onParticipateSession(selectedSession, attendeeRef)">
+        Confirmer
+      </Button>
+    </template>
+  </CModal>
+
+  <CModal
+      v-model:open="sessionAttendeesModal"
+      title="Liste des membres inscrits"
+  >
+    <template #content>
+      <CTable
+          :items="selectedSession.attendees"
+          :columns="columns"
+      />
     </template>
   </CModal>
 

@@ -32,6 +32,7 @@ const modal = defineModel<boolean>('open')
 <template>
   <UModal
       v-model:open="modal"
+      v-bind="$attrs"
       :title="title"
       :description="description"
       :ui="{
