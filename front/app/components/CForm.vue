@@ -5,7 +5,7 @@ const form = useTemplateRef('form')
 defineProps({
   item: {
     type: Object,
-    required: true,
+    default: null,
   },
   hasFooter: {
     type: Boolean,
