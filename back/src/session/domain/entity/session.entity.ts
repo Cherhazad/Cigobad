@@ -16,22 +16,25 @@ export class Session {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   level: Level;
 
-  @Column()
+  @Column({ nullable: true })
   hours: string;
 
   @Column({ nullable: true })
   openedBy: string;
 
-  @Column()
+  @Column({ nullable: true })
   date: Date;
 
-  @ManyToMany(() => User, (user) => user.sessions)
+  @ManyToMany(() => User, (user) => user.sessions, {
+    eager: true,
+    cascade: true,
+  })
   @JoinTable()
   attendees: User[];
 

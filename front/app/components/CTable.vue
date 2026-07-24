@@ -27,8 +27,8 @@ watch(props.items, (newVal, oldVal) => {
 
 <template>
   <DataTable
+      resizable-columns
       :value="items"
-      table-style="min-width: 50rem"
       data-key="id"
       class="club-table"
   >
@@ -39,7 +39,7 @@ watch(props.items, (newVal, oldVal) => {
         </slot>
       </template>
     </Column>
-    <Column header="Actions">
+    <Column v-if="$slots['item-actions']" header="Actions">
       <template #body="{ data }">
         <div class="flex justify-center">
           <slot name="item-actions" :item="data"/>

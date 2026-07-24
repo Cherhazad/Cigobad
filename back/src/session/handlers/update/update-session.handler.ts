@@ -45,11 +45,19 @@ export class UpdateSessionHandler implements ICommandHandler<UpdateSessionComman
       session.openedBy = openedBy;
     }
 
-    if (attendees && session.attendees !== attendees) {
-      /*      const id = attendees.map((attendee) => attendee.id);
-      const attendee = this.userRepository.findById(id);*/
-      console.log(attendees);
-      //do it later
+    if (attendees && attendees.length && session.attendees !== attendees) {
+      if (attendees && attendees.length) {
+        const newAttendees = await Promise.all(
+          attendees.map((attendee) =>
+            this.userRepository.findById(attendee.id),
+          ),
+        );
+        const existingIds = session.attendees.map((a) => a.id);
+        const uniqueNewAttendees = newAttendees.filter(
+          (a) => !existingIds.includes(a.id),
+        );
+        session.attendees = [...session.attendees, ...uniqueNewAttendees];
+      }
     }
 
     return this.sessionRepository.update(session);

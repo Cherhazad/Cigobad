@@ -10,7 +10,10 @@ export class DeleteByIdSessionHandler implements ICommandHandler<DeleteByIdSessi
     @Inject(ISessionRepository) private sessionRepository: ISessionRepository,
   ) {}
 
-  async execute(query: DeleteByIdSessionCommand): Promise<UpdateResult> {
-    return await this.sessionRepository.remove(query.id);
+  async execute(command: DeleteByIdSessionCommand): Promise<UpdateResult> {
+    const session = await this.sessionRepository.findById(command.id);
+    session.attendees = [];
+    await this.sessionRepository.update(session);
+    return await this.sessionRepository.remove(command.id);
   }
 }

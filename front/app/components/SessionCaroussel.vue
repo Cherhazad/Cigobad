@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Pencil, Times} from "@primeicons/vue";
-import type {SessionDto, UserDto} from "shared";
+import {Level, type SessionDto, type UserDto} from "shared";
 import type {MenuItem} from "primevue/menuitem";
 import {useToast} from "primevue/usetoast";
 import {formatLevel} from "~~/utils/formatLevel";
@@ -12,25 +12,27 @@ const toast = useToast()
 const deleteModal = ref(false)
 const formModal = ref(false)
 const sessionSubsModal = ref(false)
+const sessionAttendeesModal = ref(false)
 const sessions = ref<SessionDto[] | undefined>([])
 const selectedSession = ref<SessionDto | undefined>()
-const users = ref<any[]>([])
-const attendee = ref<UserDto>()
+const users = ref<{ label: string, value: UserDto }[]>([])
+const attendeeRef = ref<UserDto>()
 
 const {data: fetchSessions, refresh} = await useFetch<SessionDto[]>(`${api}/session`, {
   method: 'GET',
 })
 
+const {data: fetchUsers} = await useFetch<UserDto[]>(`${api}/user`, {
+  method: 'GET',
+})
+
 onMounted(async () => {
   sessions.value = fetchSessions.value
-  const {data: fetchUsers} = await useFetch<UserDto[]>(`${api}/user`, {
-    method: 'GET',
-  })
   if (fetchUsers.value && fetchUsers.value.length > 0) {
     users.value = fetchUsers.value.map((user: UserDto) => {
       return {
         label: user.lastName.toUpperCase() + ' ' + user.firstName,
-        value: user.id
+        value: user
       }
     })
   }
@@ -83,29 +85,42 @@ const onEditSession = async (session: SessionDto) => {
   }
 }
 
-const onParticipateSession = async (session: SessionDto, attendee: { label: string; value: number }) => {
+const onParticipateSession = async (session: SessionDto, attendee: { label: string; value: UserDto }) => {
   const data = await $fetch(`${api}/session/${session.id}`, {
     method: 'PATCH',
     body: {
       id: session.id,
-      attendees: users.value.find((user) => user.id === attendee.value)
+      attendees: [attendee.value]
     },
     onResponseError({response}) {
-      toast.add({severity: 'error', summary: "'Erreur lors de l'édition", detail: response._data?.message, life: 3000})
+      toast.add({
+        severity: 'error',
+        summary: "Erreur lors de l'inscription",
+        detail: response._data?.message,
+        life: 3000
+      })
     }
   })
   if (data) {
-    toast.add({severity: 'success', summary: 'Modifications', detail: 'Modifications enregistrées.', life: 3000})
+    toast.add({
+      severity: 'success',
+      summary: 'Inscription',
+      detail: 'Votre inscription a bien été enregistrée.',
+      life: 3000
+    })
+    sessionSubsModal.value = false
+    attendeeRef.value = undefined
+    await refresh()
   }
 }
 
-const onDeleteSession = async (session: SessionDto | undefined) => {
+const onDeleteSession = async (session: SessionDto) => {
   const data = await $fetch(`${api}/session/${session?.id}`, {
     method: 'DELETE',
     onResponseError({response}) {
       toast.add({
         severity: 'error',
-        summary: 'Erreur lors de la suppresion',
+        summary: 'Erreur lors de la suppression',
         detail: response._data?.message,
         life: 3000
       })
@@ -116,7 +131,7 @@ const onDeleteSession = async (session: SessionDto | undefined) => {
     selectedSession.value = undefined
   }
   deleteModal.value = false
-  refresh()
+  await refresh()
 }
 
 const onSubmit = async (session: SessionDto) => {
@@ -155,6 +170,42 @@ const onParticipate = (session: SessionDto) => {
   selectedSession.value = session
   sessionSubsModal.value = true
 }
+
+const getAvailableUsers = (session: SessionDto) => {
+  if (!session?.attendees?.length) return users.value
+
+  const attendeeIds = session.attendees.map((a) => a.id)
+  return users.value.filter((user) => !attendeeIds.includes(user.value.id))
+}
+
+const getLevelColor = (level: Level) => {
+  switch (level) {
+    case Level.Debutant:
+      return 'info'
+    case Level.Intermediaire:
+      return 'warn'
+    case Level.Confirme:
+      return 'danger'
+    default:
+      return 'secondary'
+  }
+}
+
+const columns = [
+  {
+    field: 'firstName',
+    header: 'Prénom',
+  },
+  {
+    field: 'lastName',
+    header: 'Nom'
+  }
+]
+
+const onSeeAttendees = (session: SessionDto) => {
+  selectedSession.value = session
+  sessionAttendeesModal.value = true
+}
 </script>
 
 <template>
@@ -166,7 +217,7 @@ const onParticipate = (session: SessionDto) => {
 
       <template #header>
         <div class="flex justify-end gap-2 m-4">
-          <Button v-if="sessions?.indexOf(item) === 0" severity="secondary" @click="formModal = true">
+          <Button v-if="sessions?.indexOf(item) === 0" severity="secondary" @click="onOpenCreateModal">
             Créer
           </Button>
           <CDropdownMenu :menu-items="getItems(item)" menu-icon="i-lucide-ellipsis-vertical"/>
@@ -174,21 +225,43 @@ const onParticipate = (session: SessionDto) => {
       </template>
 
       <template #title>
-        <span class="font-bold text-5xl">{{ item?.name }}</span>
+        <div class="flex gap-4 items-end">
+          <span class="font-bold text-5xl">{{ item?.name }} </span>
+        </div>
+
       </template>
 
       <template #subtitle>
         <div class="flex items-center gap-2">
-          <Tag severity="info" :value="`Niveau ${formatLevel(item?.level).toLowerCase()}`"/>
-          <Tag severity="success" value="Disponible"/>
+          <Tag :severity="getLevelColor(item.level)" :value="`Niveau ${formatLevel(item.level).toLowerCase()}`"/>
         </div>
       </template>
 
       <template #content>
-        <div class="space-y-4">
-          <span class="font-bold text-xl">{{ item?.hours }}</span>
+        <div class="space-y-2 flex flex-col">
+          <div v-if="item.date" class="flex items-center gap-2">
+            <UIcon name="i-lucide-calendar"/>
+            <span class="font-bold text-xl">{{
+                new Date(item.date).toLocaleDateString('fr-FR')
+              }}</span>
+          </div>
           <div class="flex items-center gap-2">
-            <span><b>Nombre d'inscrits: </b> 23/36</span>
+            <UIcon name="i-lucide-clock"/>
+            <span class="font-bold text-xl"> {{
+                item?.hours
+              }}</span>
+          </div>
+          <div class="flex items-center gap-2 sm:flex-wrap">
+            <span><b>Nombre d'inscrits: </b> {{ item.attendees.length }}/36</span>
+            <Button
+                v-tooltip="'Voir les participants'"
+                icon="pi pi-eye"
+                severity="secondary"
+                @click="onSeeAttendees(item)"/>
+            <Tag
+                :severity="`${item.attendees.length >= 36 ? 'danger' : 'success'}`"
+                :value="`${item.attendees.length >= 36 ? 'Complet' : 'Disponible'}`"
+            />
           </div>
           <div class="flex items-center gap-2">
             <span><b>Gymnase ouvert par: </b> {{ item?.openedBy }}</span>
@@ -261,16 +334,28 @@ const onParticipate = (session: SessionDto) => {
   >
     <template #content>
       <CFormField
-          v-model="attendee"
+          v-model="attendeeRef"
           label="Adhérents"
           type="select"
-          :items="users"
+          :items="getAvailableUsers(selectedSession)"
       />
     </template>
     <template #footer>
-      <Button @click="onParticipateSession(selectedSession, attendee)">
+      <Button @click="onParticipateSession(selectedSession, attendeeRef)">
         Confirmer
       </Button>
+    </template>
+  </CModal>
+
+  <CModal
+      v-model:open="sessionAttendeesModal"
+      title="Liste des membres inscrits"
+  >
+    <template #content>
+      <CTable
+          :items="selectedSession.attendees"
+          :columns="columns"
+      />
     </template>
   </CModal>
 
