@@ -36,6 +36,13 @@ const items = computed<NavigationMenuItem[]>(() => [{
 
     <template #right-items>
       <CColorModeButton/>
+      <UButton
+          icon="i-lucide-user"
+          color="neutral"
+          variant="ghost"
+          aria-label="Se connecter"
+          to="/login"
+      />
     </template>
 
   </CHeader>
