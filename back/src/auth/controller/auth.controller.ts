@@ -28,7 +28,7 @@ export class AuthController {
       lastName: string;
     },
   ): Promise<UserDto> {
-    return this.commandBus.execute(
+    const user: UserDto = await this.commandBus.execute(
       new RegisterCommand(
         body.email,
         body.password,
@@ -36,5 +36,7 @@ export class AuthController {
         body.lastName,
       ),
     );
+    if (user && typeof user === 'object') delete (user as any).password;
+    return user;
   }
 }

@@ -1,4 +1,4 @@
-import { CommandHandler, IQueryHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { Session } from '../../domain/entity/session.entity';
 import { CreateSessionCommand } from '../../application/command/create-session.command';
@@ -7,7 +7,7 @@ import { User } from '../../../user/domain/entity/user.entity';
 import { IUserRepository } from '../../../user/domain/port/user.repository';
 
 @CommandHandler(CreateSessionCommand)
-export class CreateSessionHandler implements IQueryHandler<CreateSessionCommand> {
+export class CreateSessionHandler implements ICommandHandler<CreateSessionCommand> {
   constructor(
     @Inject(ISessionRepository)
     private readonly sessionRepository: ISessionRepository,

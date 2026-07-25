@@ -15,7 +15,7 @@ const credentials = reactive({
 const login = async () => {
   const login = await $fetch(`${api}/auth/login`, {
     method: 'POST',
-    body: credentials,
+    body: {email: credentials.email, password: credentials.password},
     onResponseError({response}) {
       toast.add({
         severity: 'error',
@@ -44,7 +44,7 @@ const register = async () => {
     onResponseError({response}) {
       toast.add({
         severity: 'error',
-        summary: "'Erreur lors de l'inscription",
+        summary: "Erreur lors de l'inscription",
         detail: response._data?.message,
         life: 3000
       })

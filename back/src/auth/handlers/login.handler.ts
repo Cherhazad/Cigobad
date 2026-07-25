@@ -15,7 +15,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
 
   async execute(command: LoginCommand): Promise<any> {
     const user = await this.authRepository.findByEmail(command.email);
-    if (!user)
+    if (!user || !user.password)
       throw new UnauthorizedException('Email ou mot de passe incorrect');
 
     const isPasswordValid = await bcrypt.compare(
