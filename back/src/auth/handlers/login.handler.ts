@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 @CommandHandler(LoginCommand)
-export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
+export class LoginHandler implements ICommandHandler<LoginCommand> {
   constructor(
     @Inject(IAuthRepository)
     private readonly authRepository: IAuthRepository,
@@ -15,7 +15,6 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 
   async execute(command: LoginCommand): Promise<any> {
     const user = await this.authRepository.findByEmail(command.email);
-
     if (!user)
       throw new UnauthorizedException('Email ou mot de passe incorrect');
 

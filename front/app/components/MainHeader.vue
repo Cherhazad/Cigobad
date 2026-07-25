@@ -15,8 +15,14 @@ const items = computed<NavigationMenuItem[]>(() => [{
     {
       label: "Nous rejoindre",
       description: "S'inscrire au club",
-      icon: 'fa-users',
+      icon: 'fa-edit',
       to: '/subscription'
+    },
+    {
+      label: "Sessions du club",
+      description: "S'inscrire à une session",
+      icon: 'fa-calendar',
+      to: '/sessions'
     }
   ]
 }

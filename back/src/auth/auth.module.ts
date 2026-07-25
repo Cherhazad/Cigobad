@@ -5,20 +5,25 @@ import { User } from '../user/domain/entity/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controller/auth.controller';
 import { IAuthRepository } from './domain/port/auth.repository';
-import { LoginCommand } from './application/command/login.command';
-import { RegisterCommand } from './application/command/register.command';
 import { MysqlAuthRepository } from './infrastructure/mysql-auth.repository';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { LoginHandler } from './handlers/login.handler';
+import { RegisterHandler } from './handlers/register.handler';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-const CommandHandlers = [LoginCommand, RegisterCommand];
+const CommandHandlers = [LoginHandler, RegisterHandler];
 
 @Module({
   imports: [
     CqrsModule,
     TypeOrmModule.forFeature([User]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.getOrThrow<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1h' },
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AuthController],
