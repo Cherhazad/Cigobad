@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ISessionRepository } from '../../domain/port/session.repository';
 import { Inject } from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
-import { DeleteByIdSessionCommand } from '../../query-command/command/delete-by-id-session.command';
+import { DeleteByIdSessionCommand } from '../../application/command/delete-by-id-session.command';
 
 @CommandHandler(DeleteByIdSessionCommand)
 export class DeleteByIdSessionHandler implements ICommandHandler<DeleteByIdSessionCommand> {

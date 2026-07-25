@@ -8,14 +8,15 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { UserDto } from 'shared';
+import { Role, UserDto } from 'shared';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserCommand } from '../query-command/commands/create-user.command';
-import { FindAllUserQuery } from '../query-command/queries/find-all-user.query';
-import { FindByIdUserQuery } from '../query-command/queries/find-by-id-user.query';
-import { UpdateUserCommand } from '../query-command/commands/update-user.command';
+import { CreateUserCommand } from '../application/commands/create-user.command';
+import { FindAllUserQuery } from '../application/queries/find-all-user.query';
+import { FindByIdUserQuery } from '../application/queries/find-by-id-user.query';
+import { UpdateUserCommand } from '../application/commands/update-user.command';
 import { UpdateResult } from 'typeorm';
-import { DeleteByIdUserCommand } from '../query-command/commands/delete-by-id-user.command';
+import { DeleteByIdUserCommand } from '../application/commands/delete-by-id-user.command';
+import { Roles } from '../../auth/decorators/roles.decorator';
 
 @Controller('user')
 export class UserController {
@@ -24,6 +25,7 @@ export class UserController {
     private readonly queryBus: QueryBus,
   ) {}
 
+  @Roles(Role.ADMIN)
   @Get()
   findAll(): Promise<UserDto[]> {
     return this.queryBus.execute(new FindAllUserQuery());

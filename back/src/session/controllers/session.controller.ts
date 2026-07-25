@@ -10,12 +10,12 @@ import {
 } from '@nestjs/common';
 import { SessionDto } from 'shared';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateSessionCommand } from '../query-command/command/create-session.command';
-import { FindByIdSessionQuery } from '../query-command/query/find-by-id-session.query';
-import { FindAllSessionQuery } from '../query-command/query/find-all-session.query';
+import { CreateSessionCommand } from '../application/command/create-session.command';
+import { FindByIdSessionQuery } from '../application/query/find-by-id-session.query';
+import { FindAllSessionQuery } from '../application/query/find-all-session.query';
 import { UpdateResult } from 'typeorm';
-import { UpdateSessionCommand } from '../query-command/command/update-session.command';
-import { DeleteByIdSessionCommand } from '../query-command/command/delete-by-id-session.command';
+import { UpdateSessionCommand } from '../application/command/update-session.command';
+import { DeleteByIdSessionCommand } from '../application/command/delete-by-id-session.command';
 
 @Controller('session')
 export class SessionController {

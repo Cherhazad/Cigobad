@@ -1,7 +1,7 @@
 import { CommandHandler, IQueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { Session } from '../../domain/entity/session.entity';
-import { CreateSessionCommand } from '../../query-command/command/create-session.command';
+import { CreateSessionCommand } from '../../application/command/create-session.command';
 import { ISessionRepository } from '../../domain/port/session.repository';
 import { User } from '../../../user/domain/entity/user.entity';
 import { IUserRepository } from '../../../user/domain/port/user.repository';
