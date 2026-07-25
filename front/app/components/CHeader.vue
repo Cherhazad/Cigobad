@@ -16,9 +16,7 @@ defineProps({
 <template>
   <UHeader :ui="{ container: 'mx-0 max-w-full'}">
     <template #title>
-      <slot name="logo">
-        Mon application
-      </slot>
+      <slot name="logo"/>
     </template>
 
     <template #default>

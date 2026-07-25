@@ -5,7 +5,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class MySqlSessionRepository implements ISessionRepository {
+export class MysqlSessionRepository implements ISessionRepository {
   constructor(
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,

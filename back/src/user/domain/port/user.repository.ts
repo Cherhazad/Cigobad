@@ -4,6 +4,7 @@ import { UpdateResult } from 'typeorm';
 export interface IUserRepository {
   findAll(): Promise<User[]>;
   findById(id: number): Promise<User>;
+  findByEmail(email: string): Promise<User>;
   create(user: User): Promise<User>;
   update(user: User): Promise<User>;
   remove(id: number): Promise<UpdateResult>;

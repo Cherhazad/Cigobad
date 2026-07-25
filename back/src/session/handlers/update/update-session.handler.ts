@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BadRequestException, Inject } from '@nestjs/common';
 import { ISessionRepository } from '../../domain/port/session.repository';
 import { Session } from '../../domain/entity/session.entity';
-import { UpdateSessionCommand } from '../../query-command/command/update-session.command';
+import { UpdateSessionCommand } from '../../application/command/update-session.command';
 import { IUserRepository } from '../../../user/domain/port/user.repository';
 
 @CommandHandler(UpdateSessionCommand)

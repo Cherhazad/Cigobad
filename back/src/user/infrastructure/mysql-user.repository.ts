@@ -5,7 +5,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class MySqlUserRepository implements IUserRepository {
+export class MysqlUserRepository implements IUserRepository {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
@@ -18,6 +18,17 @@ export class MySqlUserRepository implements IUserRepository {
       throw new NotFoundException(`User with id ${id} not found`);
     }
 
+    return user;
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
     return user;
   }
 

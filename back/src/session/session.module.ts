@@ -5,9 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateSessionHandler } from './handlers/create/create-session.handler';
 import { FindByIdSessionHandler } from './handlers/find-by-id/find-by-id-session.handler';
-import { MySqlSessionRepository } from './repository/mysql-session.repository';
+import { MysqlSessionRepository } from './infrastructure/mysql-session.repository';
 import { SessionController } from './controllers/session.controller';
-import { MySqlUserRepository } from '../user/repository/mysql-user.repository';
+import { MysqlUserRepository } from '../user/infrastructure/mysql-user.repository';
 import { IUserRepository } from '../user/domain/port/user.repository';
 import { User } from '../user/domain/entity/user.entity';
 import { FindAllSessionHandler } from './handlers/find-all/find-all-session.handler';
@@ -28,11 +28,11 @@ const CommandHandlers = [
     ...CommandHandlers,
     {
       provide: ISessionRepository,
-      useClass: MySqlSessionRepository,
+      useClass: MysqlSessionRepository,
     },
     {
       provide: IUserRepository,
-      useClass: MySqlUserRepository,
+      useClass: MysqlUserRepository,
     },
   ],
   controllers: [SessionController],

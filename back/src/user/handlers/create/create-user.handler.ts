@@ -1,11 +1,11 @@
-import { CommandHandler, IQueryHandler } from '@nestjs/cqrs';
-import { CreateUserCommand } from '../../query-command/commands/create-user.command';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CreateUserCommand } from '../../application/commands/create-user.command';
 import { IUserRepository } from '../../domain/port/user.repository';
 import { Inject } from '@nestjs/common';
 import { User } from '../../domain/entity/user.entity';
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserHandler implements IQueryHandler<CreateUserCommand> {
+export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   constructor(
     @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,

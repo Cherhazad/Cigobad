@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { ISessionRepository } from '../../domain/port/session.repository';
 import { Session } from '../../domain/entity/session.entity';
-import { FindAllSessionQuery } from '../../query-command/query/find-all-session.query';
+import { FindAllSessionQuery } from '../../application/query/find-all-session.query';
 
 @QueryHandler(FindAllSessionQuery)
 export class FindAllSessionHandler implements IQueryHandler<FindAllSessionQuery> {

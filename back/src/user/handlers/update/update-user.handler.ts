@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateUserCommand } from '../../query-command/commands/update-user.command';
+import { UpdateUserCommand } from '../../application/commands/update-user.command';
 import { BadRequestException, Inject } from '@nestjs/common';
 import { IUserRepository } from '../../domain/port/user.repository';
 import { User } from '../../domain/entity/user.entity';
