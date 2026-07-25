@@ -13,7 +13,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() body: { email: string; password: string },
-  ): Promise<UserDto> {
+  ): Promise<{ access_token: string }> {
     return this.commandBus.execute(new LoginCommand(body.email, body.password));
   }
 
