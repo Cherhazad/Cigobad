@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category, Discount, Formula, Level, Session } from 'shared';
+import { Category, Discount, Formula, Level, SessionEnum } from 'shared';
 
 @Entity()
 export class User {
@@ -42,10 +42,10 @@ export class User {
 
   @Column({
     type: 'set',
-    enum: Session,
+    enum: SessionEnum,
     nullable: true,
   })
-  session: Session[];
+  session: SessionEnum[];
 
   @Column({ nullable: true })
   formula: Formula;
