@@ -2,6 +2,10 @@
 import {useToast} from "primevue/usetoast";
 import type {UserDto} from "shared";
 
+definePageMeta({
+  middleware: ['auth'],
+})
+
 const config = useRuntimeConfig()
 const api = config.public.apiBase
 const isFormSent = ref<boolean>(false)
