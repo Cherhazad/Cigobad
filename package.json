@@ -1,1 +1,18 @@
-{}
+{
+  "name": "club-badminton",
+  "private": true,
+  "workspaces": [
+    "front",
+    "back",
+    "shared"
+  ],
+  "scripts": {
+    "dev:front": "npm run dev --workspace=front",
+    "dev:back": "npm run dev --workspace=back",
+    "build:shared": "npm run build --workspace=shared",
+    "dev": "concurrently \"npm run dev:shared\" \"npm run dev:back\" \"npm run dev:front\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4"
+  }
+}
