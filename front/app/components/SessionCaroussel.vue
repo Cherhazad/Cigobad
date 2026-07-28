@@ -31,7 +31,7 @@ onMounted(async () => {
   if (fetchUsers.value && fetchUsers.value.length > 0) {
     users.value = fetchUsers.value.map((user: UserDto) => {
       return {
-        label: user.lastName.toUpperCase() + ' ' + user.firstName,
+        label: user?.lastName?.toUpperCase() + ' ' + user?.firstName,
         value: user
       }
     })
