@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {NavigationMenuItem} from "@nuxt/ui/components/NavigationMenu.vue";
 
+const {loggedIn} = useUserSession()
 const items = computed<NavigationMenuItem[]>(() => [{
   label: 'Le club',
   icon: 'i-lucide-house',
@@ -43,6 +44,7 @@ const items = computed<NavigationMenuItem[]>(() => [{
     <template #right-items>
       <CColorModeButton/>
       <UButton
+          v-if="!loggedIn"
           icon="i-lucide-user"
           color="neutral"
           variant="ghost"
