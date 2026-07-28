@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "prebuild": "cd ../shared && npm install && npm run build",
+    "pregenerate": "cd ../shared && npm install && npm run build",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
