@@ -10,6 +10,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { LoginHandler } from './handlers/login.handler';
 import { RegisterHandler } from './handlers/register.handler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { IUserRepository } from '../user/domain/port/user.repository';
+import { MysqlUserRepository } from '../user/infrastructure/mysql-user.repository';
 
 const CommandHandlers = [LoginHandler, RegisterHandler];
 
@@ -33,6 +35,10 @@ const CommandHandlers = [LoginHandler, RegisterHandler];
     {
       provide: IAuthRepository,
       useClass: MysqlAuthRepository,
+    },
+    {
+      provide: IUserRepository,
+      useClass: MysqlUserRepository,
     },
   ],
 })

@@ -28,6 +28,7 @@
     "@primeuix/themes": "^3.0.0-rc.1",
     "eslint": "^9.39.4",
     "iconify": "^1.4.0",
+    "jwt-decode": "^4.0.0",
     "nuxt": "^4.4.6",
     "nuxt-auth-utils": "^0.5.29",
     "oh-vue-icons": "^1.0.0-rc3",

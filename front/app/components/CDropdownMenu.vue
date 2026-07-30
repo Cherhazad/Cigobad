@@ -30,6 +30,7 @@ const toggle = (event: MouseEvent): void => {
         type="button" class="min-w-fit" :icon="menuIcon" variant="outlined" severity="secondary"
         @click="toggle">
       {{ menuLabel }}
+      <slot name="avatar"/>
       <icon :name="menuIcon"/>
     </Button>
   </div>
