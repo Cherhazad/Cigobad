@@ -1,9 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { LoginCommand } from '../application/command/login.command';
 import { RegisterCommand } from '../application/command/register.command';
 import { UserDto } from 'shared';
 import { Public } from '../decorators/public.decorator';
+import type { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -38,5 +39,10 @@ export class AuthController {
     );
     if (user && typeof user === 'object') delete (user as any).password;
     return user;
+  }
+
+  @Get('me')
+  getProfile(@Req() req: Request): Express.User | undefined {
+    return req.user;
   }
 }

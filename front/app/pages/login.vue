@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import {useToast} from "primevue/usetoast";
+import {useAuthStore} from "~/stores/useAuthStore.ts";
 
-const config = useRuntimeConfig()
-const api = config.public.apiBase
-const {fetch: refreshSession} = useUserSession()
-const toast = useToast()
+const auth = useAuthStore()
 
 const credentials = reactive({
   email: '',
@@ -12,55 +9,6 @@ const credentials = reactive({
   firstName: '',
   lastName: '',
 })
-const login = async () => {
-  const login = await $fetch(`${api}/auth/login`, {
-    method: 'POST',
-    body: {email: credentials.email, password: credentials.password},
-    onResponseError({response}) {
-      toast.add({
-        severity: 'error',
-        summary: 'Erreur lors de la connexion',
-        detail: response._data?.message,
-        life: 3000
-      })
-    }
-  })
-  if (login) {
-    await refreshSession()
-    await navigateTo('/sessions')
-    toast.add({
-      severity: 'success',
-      summary: "Connexion",
-      detail: 'Connexion réalisée avec succès.',
-      life: 3000
-    })
-  }
-}
-
-const register = async () => {
-  const register = await $fetch(`${api}/auth/register`, {
-    method: 'POST',
-    body: credentials,
-    onResponseError({response}) {
-      toast.add({
-        severity: 'error',
-        summary: "Erreur lors de l'inscription",
-        detail: response._data?.message,
-        life: 3000
-      })
-    }
-  })
-  if (register) {
-    await refreshSession()
-    await navigateTo('/sessions')
-    toast.add({
-      severity: 'success',
-      summary: "Inscription",
-      detail: 'Inscription réalisée avec succès.',
-      life: 3000
-    })
-  }
-}
 
 </script>
 
@@ -76,7 +24,7 @@ const register = async () => {
         <TabPanel value="tab1">
           <Card class="w-full">
             <template #content>
-              <CForm button-label="Se connecter" @submit="login">
+              <CForm button-label="Se connecter" @submit="auth.login(credentials.email, credentials.password)">
                 <div class="flex flex-col gap-6 p-4">
                   <CFormField
                       v-model="credentials.email"
@@ -100,7 +48,7 @@ const register = async () => {
         <TabPanel value="tab2">
           <Card class="w-full">
             <template #content>
-              <CForm button-label="S'inscrire" @submit="register">
+              <CForm button-label="S'inscrire" @submit="auth.register(credentials)">
                 <div class="flex flex-col gap-6 p-4">
                   <CFormField
                       v-model="credentials.email"
