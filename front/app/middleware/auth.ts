@@ -1,12 +1,13 @@
+import {useAuthStore} from "~/stores/useAuthStore.ts";
+
 export default defineNuxtRouteMiddleware((to) => {
     const publicRoutes = ['/login']
-    const {loggedIn} = useUserSession()
+    const auth = useAuthStore()
+    const {isAuthenticated} = storeToRefs(auth)
 
-    if (loggedIn.value) return
+    if (isAuthenticated.value) return
 
-    if (!loggedIn.value && !publicRoutes.includes(to.path)) {
-        console.log(loggedIn.value)
-        console.log(to.path)
+    if (!isAuthenticated.value && !publicRoutes.includes(to.path)) {
         return navigateTo('/login')
     }
 })

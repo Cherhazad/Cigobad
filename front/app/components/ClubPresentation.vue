@@ -3,6 +3,7 @@ import type {UserDto} from "shared";
 import {Pencil, Times} from "@primeicons/vue";
 import type {MenuItem} from "primevue/menuitem";
 import {useToast} from "primevue/usetoast";
+import {useAuthStore} from "~/stores/useAuthStore.ts";
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
@@ -12,6 +13,9 @@ const selectedUser = ref<UserDto>({} as UserDto)
 const users = ref()
 const toast = useToast()
 const modal = ref(false)
+
+const auth = useAuthStore()
+const {isAuthenticated} = storeToRefs(auth)
 
 const {data: fetchUsers, refresh} = await useFetch<UserDto[]>(`${api}/user`, {
   method: 'GET',
@@ -150,7 +154,6 @@ const getItems = (user: UserDto): MenuItem[] => [
 
 <template>
   <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4">
-
     <div
         class="max-w-5xl mx-auto mb-8 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 p-10">
       <h1 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6 tracking-tight">
@@ -171,6 +174,25 @@ const getItems = (user: UserDto): MenuItem[] => [
     </div>
 
     <div
+        class="max-w-5xl mx-auto mb-8 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 p-10">
+      <h1 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6 tracking-tight">
+        Tarifs
+      </h1>
+      <ul class="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-300 text-sm text-left">
+        <li>Cotisation annuelle : 100 €</li>
+        <span class="font-bold">Option cours : 1 seul cours possible par semaine qui correspond à celui de votre créneau préférentiel.
+          Il est bien évidemment possible de jouer sur les autres créneaux selon votre niveau.</span>
+        <li>Cours du mardi de 20h00 à 21h30 (environ 30 séances) : 60€ en plus de la cotisation annuelle</li>
+        <li>Cours du jeudi de 20h15 à 21h45 (environ 30 séances) : 60€ en plus de la cotisation annuelle</li>
+        <li>Droit de terrain : 60 €</li>
+        <li>Cotisation estivale (à partir du 1er mai 2026) : 45 €</li>
+        <span class="font-bold">Enfants à partir de 16 ans !
+          Réductions : étudiant, demandeur d’emploi, 2e membre d’une même famille, Pass Sport (jeunes)</span>
+      </ul>
+    </div>
+
+    <div
+        v-if="isAuthenticated"
         class="max-w-7xl mx-auto rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 p-10">
       <div>
         <h3 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-6 tracking-tight">
