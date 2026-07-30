@@ -30,7 +30,6 @@
     "iconify": "^1.4.0",
     "jwt-decode": "^4.0.0",
     "nuxt": "^4.4.6",
-    "nuxt-auth-utils": "^0.5.29",
     "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^3.0.4",
     "primeicons": "^8.0.0",
