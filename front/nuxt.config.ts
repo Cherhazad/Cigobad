@@ -20,7 +20,7 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            apiBase: 'http://localhost:3008',
+            apiBase: process.env.API_URL,
             PRIMEUI_LICENSE: process.env.NUXT_PUBLIC_PRIMEUI_LICENSE
         }
     },
