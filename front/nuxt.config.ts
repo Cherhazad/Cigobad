@@ -80,7 +80,6 @@ export default defineNuxtConfig({
         '@nuxtjs/eslint-module',
         '@nuxtjs/google-fonts',
         '@pinia/nuxt',
-        '@primevue/nuxt-module',
-        'nuxt-auth-utils'
+        '@primevue/nuxt-module'
     ]
 })
