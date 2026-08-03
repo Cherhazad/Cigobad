@@ -46,7 +46,7 @@ const items = computed<NavigationMenuItem[]>(() => [{
 
 const profileItems = computed<MenuItem[]>(() => [
   {
-    label: 'Paramètres',
+    label: 'Modifier le profil',
   },
   {
     label: "Déconnexion",
