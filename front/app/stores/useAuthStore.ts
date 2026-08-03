@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import type {UserDto} from 'shared'
 import {useToast} from "primevue/usetoast";
+import {jwtDecode} from "jwt-decode";
 
 export const useAuthStore = defineStore('auth', () => {
     const config = useRuntimeConfig()
@@ -11,7 +12,14 @@ export const useAuthStore = defineStore('auth', () => {
         default: () => null
     })
 
-    const user = ref<UserDto | null>(null)
+    const user = computed<UserDto | null>(() => {
+        if (!token.value) return null
+        try {
+            return jwtDecode<UserDto>(token.value)
+        } catch {
+            return null
+        }
+    })
 
     const isAuthenticated = computed(() => !!token.value)
 
@@ -33,8 +41,6 @@ export const useAuthStore = defineStore('auth', () => {
         })
 
         token.value = response.access_token
-
-        await fetchProfile()
 
         if (response) {
             toast.add({
@@ -74,23 +80,8 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
-    const fetchProfile = async () => {
-        if (!token.value) {
-            user.value = null
-            return
-        }
-
-        user.value = await $fetch<UserDto>(`${api}/auth/me`, {
-            headers: {
-                Authorization: `Bearer ${token.value}`
-            }
-        })
-    }
-
     const logout = async () => {
         token.value = null
-        user.value = null
-
         navigateTo('/login')
     }
 
@@ -100,7 +91,6 @@ export const useAuthStore = defineStore('auth', () => {
         isAuthenticated,
         login,
         logout,
-        fetchProfile,
-        register
+        register,
     }
 })

@@ -67,7 +67,7 @@ const emits = defineEmits(['submitted'])
     <CFormField
         v-model="selectedSession.openedBy"
         label="Gymnase ouvert par"
-        placeholder="Jules"
+        placeholder="Romain"
         :type="FieldTypes.string"
     />
 
