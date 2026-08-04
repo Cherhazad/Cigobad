@@ -5,6 +5,12 @@
   "entryFile": "main",
   "compilerOptions": {
     "deleteOutDir": true,
-    "tsConfigPath": "tsconfig.build.json"
+    "tsConfigPath": "tsconfig.build.json",
+    "assets": [
+      {
+        "include": "database/migrations/*.js",
+        "outDir": "./dist"
+      }
+    ]
   }
 }
