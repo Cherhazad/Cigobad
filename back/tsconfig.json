@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "include": ["src/**/*"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -24,7 +25,6 @@
     "paths": {
       "@shared": ["../shared/src/index.ts"],
       "@shared/*": ["../shared/src/*"]
-    },
-    "include": ["src/**/*"]
+    }
   }
 }
