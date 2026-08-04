@@ -8,10 +8,7 @@ console.log('ENV:', process.env.NODE_ENV);
 
 console.log(
   'MIGRATIONS:',
-  join(
-    __dirname,
-    `../database/migrations/*.${process.env.NODE_ENV === 'production' ? 'js' : 'ts'}`,
-  ),
+  join(__dirname, '../database/migrations/*{.js,.ts}'),
 );
 
 const AppDataSource = new DataSource({
@@ -27,12 +24,7 @@ const AppDataSource = new DataSource({
 
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
 
-  migrations: [
-    join(
-      __dirname,
-      `../database/migrations/*.${process.env.NODE_ENV === 'production' ? 'js' : 'ts'}`,
-    ),
-  ],
+  migrations: [join(__dirname, '../database/migrations/*{.js,.ts}')],
 
   migrationsRun: true,
 });
