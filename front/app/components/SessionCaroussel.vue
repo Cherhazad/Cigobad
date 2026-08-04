@@ -294,8 +294,8 @@ const onSeeAttendees = (session: SessionDto) => {
 
       <template #footer>
         <div class="flex justify-center gap-3 pb-6 px-6">
-          <UButton icon="i-lucide-plus" label="Create new" @click="onOpenCreateModal"/>
-          <UButton icon="i-lucide-refresh" label="Refresh" severity="secondary" @click="refresh()"/>
+          <UButton icon="i-lucide-plus" label="Create new" color="neutral" @click="onOpenCreateModal"/>
+          <UButton icon="i-lucide-refresh" label="Refresh" color="neutral" @click="refresh()"/>
         </div>
       </template>
     </UCard>
