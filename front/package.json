@@ -9,7 +9,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "echo 'skip nuxt prepare on install'"
   },
   "dependencies": {
     "@bubblesortt/nuxt-es-toolkit": "^1.0.10",
