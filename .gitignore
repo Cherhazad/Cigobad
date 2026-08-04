@@ -8,6 +8,7 @@ dist/
 
 # Nest
 dist/
+!shared/dist/
 
 # Shared
 shared/src/**/index.ts
