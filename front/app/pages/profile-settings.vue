@@ -17,7 +17,7 @@ const {data: userRef} = await useFetch<UserDto>(`${api}/user/${user?.value?.sub}
 
 <template>
   <div class="flex flex-col items-center py-12 px-4">
-    <UCard class="w-4/5">
+    <UCard class="sm:w-4/5 w-full">
       <template #title>
         <div class="flex gap-4 items-end">
           <span class="font-bold text-4xl">Profil</span>
@@ -35,7 +35,7 @@ const {data: userRef} = await useFetch<UserDto>(`${api}/user/${user?.value?.sub}
               <div class="mt-4 flex gap-2">
                 <div class="w-1/3 flex justify-center">
                   <UAvatar
-                      class="h-24 w-24"
+                      class="h-12 w-12 md:h-24 md:w-24"
                       :text="`${user?.firstName.charAt(0).toUpperCase()}${user?.lastName.charAt(0).toUpperCase()}`"
                   />
                 </div>
@@ -46,9 +46,9 @@ const {data: userRef} = await useFetch<UserDto>(`${api}/user/${user?.value?.sub}
                     {{ user?.lastName.toUpperCase() }}
                   </div>
                   <Tag>Jeudi</Tag>
-                  <span class="mr-auto">N° de licence FFPBad: {{ userRef?.licenceNumber }}</span>
                 </div>
               </div>
+              <div class="mr-auto mt-2">N° FFBaD: {{ userRef?.licenceNumber }}</div>
             </template>
           </UCard>
 
