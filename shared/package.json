@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "build": "npm run barrels && tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.json",
+    "build": "npm run barrels && npx tsup src/index.ts --format esm,cjs --dts --tsconfig tsconfig.json",
     "dev": "concurrently \"npm run watch:barrels\" \"npm run watch:tsup\"",
     "watch:barrels": "nodemon --watch src --ext ts --ignore \"src/**/index.ts\" --exec \"npm run barrels\"",
     "watch:tsup": "tsup src/index.ts --format esm,cjs --dts --watch --tsconfig tsconfig.json",
