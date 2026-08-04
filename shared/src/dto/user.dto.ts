@@ -15,4 +15,5 @@ export class UserDto {
     discount!: Discount;
     level!: Level;
     comment!: string;
+    avatar!: string;
 }

@@ -4,6 +4,7 @@ import { Inject, UnauthorizedException } from '@nestjs/common';
 import { IAuthRepository } from '../domain/port/auth.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UserPayloadDto } from 'shared';
 
 @CommandHandler(LoginCommand)
 export class LoginHandler implements ICommandHandler<LoginCommand> {
@@ -26,7 +27,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     if (!isPasswordValid)
       throw new UnauthorizedException('Email ou mot de passe incorrect');
 
-    const payload = {
+    const payload: UserPayloadDto = {
       sub: user.id,
       email: user.email,
       role: user.role,
