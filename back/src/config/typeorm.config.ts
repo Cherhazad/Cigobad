@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
+import { join } from 'node:path';
 
 config();
 
@@ -16,7 +17,12 @@ const AppDataSource = new DataSource({
 
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
 
-  migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
+  migrations: [
+    join(
+      __dirname,
+      `../database/migrations/*.${process.env.NODE_ENV === 'production' ? 'js' : 'ts'}`,
+    ),
+  ],
 
   migrationsRun: true,
 });
