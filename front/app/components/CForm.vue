@@ -37,9 +37,9 @@ defineEmits(['submit'])
     <slot/>
 
     <div v-if="hasFooter" class="flex justify-end pt-2">
-      <Button :class="buttonClass" @click="form?.submit()">
+      <UButton color="neutral" :class="buttonClass" @click="form?.submit()">
         {{ buttonLabel }}
-      </Button>
+      </UButton>
     </div>
   </UForm>
 </template>

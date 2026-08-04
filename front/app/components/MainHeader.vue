@@ -2,7 +2,7 @@
 import type {NavigationMenuItem} from "@nuxt/ui/components/NavigationMenu.vue";
 import CColorModeButton from "~/components/CColorModeButton.vue";
 import {useAuthStore} from "~/stores/useAuthStore.ts";
-import type {MenuItem} from "primevue/menuitem";
+import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 const auth = useAuthStore()
 const {user, isAuthenticated} = storeToRefs(auth)
@@ -44,13 +44,25 @@ const items = computed<NavigationMenuItem[]>(() => [{
 }
 ])
 
-const profileItems = computed<MenuItem[]>(() => [
+const profileItems = computed<DropdownMenuItem[]>(() => [
   {
-    label: 'Modifier le profil',
+    label: 'Profil',
+    children: [
+      {
+        label: 'Modifier le profil',
+        icon: 'i-lucide-user',
+        to: '/profile-settings'
+      },
+      {
+        label: 'Mes sessions',
+        icon: 'i-lucide-calendar',
+      }
+    ]
   },
   {
     label: "Déconnexion",
-    command: auth.logout
+    onSelect: auth.logout,
+    icon: 'i-lucide-log-out'
   }
 ])
 </script>
@@ -80,11 +92,8 @@ const profileItems = computed<MenuItem[]>(() => [
       <CDropdownMenu
           v-else
           :menu-items="profileItems"
-      >
-        <template #avatar>
-          <UAvatar :text="`${user?.firstName.charAt(0).toUpperCase()}${user?.lastName.charAt(0).toUpperCase()}`"/>
-        </template>
-      </CDropdownMenu>
+          :menu-label="`${user?.firstName.charAt(0).toUpperCase()}${user?.lastName.charAt(0).toUpperCase()}`"
+      />
     </template>
 
   </CHeader>

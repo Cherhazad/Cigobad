@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type {UserDto} from "shared";
-import {Pencil, Times} from "@primeicons/vue";
-import type {MenuItem} from "primevue/menuitem";
 import {useToast} from "primevue/usetoast";
 import {useAuthStore} from "~/stores/useAuthStore.ts";
+import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
@@ -136,24 +135,24 @@ const onOpenEditModal = (user: UserDto) => {
   editModal.value = true
 }
 
-const getItems = (user: UserDto): MenuItem[] => [
+const getItems = (user: UserDto): DropdownMenuItem[] => [
   {
     label: 'Éditer',
-    icon: Pencil,
-    command: () => onOpenEditModal(user),
+    icon: 'i-lucide-edit',
+    onSelect: () => onOpenEditModal(user),
   },
   {separator: true},
   {
     label: 'Supprimer',
-    icon: Times,
+    icon: 'i-lucide-delete',
     class: 'text-red-500! dark:text-red-400!',
-    command: () => confirmModal(user)
+    onSelect: () => confirmModal(user)
   },
 ]
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4">
+  <div class="min-h-screen py-12 px-4">
     <div
         class="max-w-5xl mx-auto mb-8 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 p-10">
       <h1 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6 tracking-tight">
@@ -226,12 +225,12 @@ const getItems = (user: UserDto): MenuItem[] => [
       description="Êtes-vous sûr.e de vouloir continuer ?"
   >
     <template #footer>
-      <Button @click="modal=false">
+      <UButton color="neutral" variant="outline" @click="modal=false">
         Annuler
-      </Button>
-      <Button severity="danger" @click="deleteUser(selectedUser)">
+      </UButton>
+      <UButton color="error" @click="deleteUser(selectedUser)">
         Supprimer
-      </Button>
+      </UButton>
     </template>
   </CModal>
 </template>
