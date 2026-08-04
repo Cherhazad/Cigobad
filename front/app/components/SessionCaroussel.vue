@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import {Pencil, Times} from "@primeicons/vue";
 import {Level, type SessionDto, type UserDto} from "shared";
-import type {MenuItem} from "primevue/menuitem";
 import {useToast} from "primevue/usetoast";
 import {formatLevel} from "~~/utils/formatLevel";
+import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 const config = useRuntimeConfig()
 const api = config.public.apiBase
@@ -151,18 +150,18 @@ const confirmModal = (session: SessionDto) => {
   deleteModal.value = true
 }
 
-const getItems = (session: SessionDto): MenuItem[] => [
+const getItems = (session: SessionDto): DropdownMenuItem[] => [
   {
     label: 'Éditer',
-    icon: Pencil,
-    command: () => onOpenEditModal(session),
+    icon: 'i-lucide-edit',
+    onSelect: () => onOpenEditModal(session),
   },
   {separator: true},
   {
     label: 'Supprimer',
-    icon: Times,
+    icon: 'i-lucide-delete',
     class: 'text-red-500! dark:text-red-400!',
-    command: () => confirmModal(session),
+    onSelect: () => confirmModal(session),
   },
 ]
 
@@ -209,74 +208,73 @@ const onSeeAttendees = (session: SessionDto) => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center mt-2">
-    <h1 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6 tracking-tight">
+  <div class="flex flex-col items-center mt-2 px-4 py-8">
+    <h1 class="text-2xl md:text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6 tracking-tight">
       SESSIONS DE BADMINTON
     </h1>
-    <Card v-for="item in sessions" :key="item.id" class="w-3/5 overflow-hidden mt-4">
+    <UCard v-for="item in sessions" :key="item.id" class="w-full max-w-3xl lg:w-3/5 mt-4 overflow-hidden">
 
       <template #header>
-        <div class="flex justify-end gap-2 m-4">
-          <Button v-if="sessions?.indexOf(item) === 0" severity="secondary" @click="onOpenCreateModal">
+        <div class="flex justify-end gap-2 mt-4 mr-0 lg:mr-4">
+          <span class="text-3xl md:text-5xl font-bold mr-auto">{{ item?.name }}</span>
+          <UButton v-if="sessions?.indexOf(item) === 0" color="neutral" variant="outline" @click="onOpenCreateModal">
             Créer
-          </Button>
+          </UButton>
           <CDropdownMenu :menu-items="getItems(item)" menu-icon="i-lucide-ellipsis-vertical"/>
         </div>
       </template>
 
-      <template #title>
-        <div class="flex gap-4 items-end">
-          <span class="font-bold text-5xl">{{ item?.name }} </span>
-        </div>
-
-      </template>
-
-      <template #subtitle>
+      <template #description>
         <div class="flex items-center gap-2">
           <Tag :severity="getLevelColor(item.level)" :value="`Niveau ${formatLevel(item.level).toLowerCase()}`"/>
         </div>
       </template>
 
-      <template #content>
+      <template #default>
         <div class="space-y-2 flex flex-col">
           <div v-if="item.date" class="flex items-center gap-2">
             <UIcon name="i-lucide-calendar"/>
-            <span class="font-bold text-xl">{{
+            <span class="font-bold text-lg md:text-xl">{{
                 new Date(item.date).toLocaleDateString('fr-FR')
               }}</span>
           </div>
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-clock"/>
-            <span class="font-bold text-xl"> {{
+            <span class="font-bold text-lg md:text-xl"> {{
                 item?.hours
               }}</span>
           </div>
-          <div class="flex items-center gap-2 sm:flex-wrap">
-            <span><b>Nombre d'inscrits: </b> {{ item.attendees.length }}/36</span>
-            <Button
-                v-tooltip="'Voir les participants'"
-                icon="pi pi-eye"
-                severity="secondary"
-                @click="onSeeAttendees(item)"/>
-            <Tag
-                :severity="`${item.attendees.length >= 36 ? 'danger' : 'success'}`"
-                :value="`${item.attendees.length >= 36 ? 'Complet' : 'Disponible'}`"
-            />
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div class="flex items-center gap-2">
+              <span><b>Nombre d'inscrits: </b> {{ item.attendees.length }}/36</span>
+              <UButton
+                  v-tooltip="'Voir les participants'"
+                  icon="i-lucide-eye"
+                  color="neutral"
+                  variant="outline"
+                  @click="onSeeAttendees(item)"/>
+            </div>
+            <div>
+              <Tag
+                  :severity="`${item.attendees.length >= 36 ? 'danger' : 'success'}`"
+                  :value="`${item.attendees.length >= 36 ? 'Complet' : 'Disponible'}`"
+              />
+            </div>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3">
             <span><b>Gymnase ouvert par: </b> {{ item?.openedBy }}</span>
-            <Button class="ml-auto" @click="onParticipate(item)">
+            <UButton color="neutral" class="sm:ml-auto w-full sm:w-auto" @click="onParticipate(item)">
               Participer
-            </Button>
+            </UButton>
           </div>
 
         </div>
       </template>
-    </Card>
+    </UCard>
 
-    <Card
+    <UCard
         v-if="sessions?.length === 0"
-        class="empty-card">
+        class="w-full max-w-xl mx-4">
       <template #header>
         <div class="flex flex-col items-center gap-3 pt-8 px-6">
           <div class="flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800">
@@ -288,19 +286,19 @@ const onSeeAttendees = (session: SessionDto) => {
         </div>
       </template>
 
-      <template #subtitle>
+      <template #description>
         <p class="text-center text-sm text-gray-500 dark:text-gray-400 px-6">
-          It looks like you haven't added any projects yet. Create one to get started.
+          Il semblerait que vous n'ayez pas de session d'organisée. Créez-en une pour commencer.
         </p>
       </template>
 
       <template #footer>
         <div class="flex justify-center gap-3 pb-6 px-6">
-          <Button icon="pi pi-plus" label="Create new" @click="onOpenCreateModal"/>
-          <Button icon="pi pi-refresh" label="Refresh" severity="secondary" @click="refresh()"/>
+          <UButton icon="i-lucide-plus" label="Create new" color="neutral" @click="onOpenCreateModal"/>
+          <UButton icon="i-lucide-refresh" label="Refresh" color="neutral" @click="refresh()"/>
         </div>
       </template>
-    </Card>
+    </UCard>
   </div>
 
   <CModal
@@ -318,12 +316,12 @@ const onSeeAttendees = (session: SessionDto) => {
       description="Êtes-vous sûr.e de vouloir continuer ?"
   >
     <template #footer>
-      <Button @click="deleteModal=false">
+      <UButton color="neutral" variant="outline" @click="deleteModal=false">
         Annuler
-      </Button>
-      <Button severity="danger" @click="onDeleteSession(selectedSession)">
+      </UButton>
+      <UButton color="error" @click="onDeleteSession(selectedSession)">
         Supprimer
-      </Button>
+      </UButton>
     </template>
   </CModal>
 
@@ -341,9 +339,9 @@ const onSeeAttendees = (session: SessionDto) => {
       />
     </template>
     <template #footer>
-      <Button @click="onParticipateSession(selectedSession, attendeeRef)">
+      <UButton color="neutral" @click="onParticipateSession(selectedSession, attendeeRef)">
         Confirmer
-      </Button>
+      </UButton>
     </template>
   </CModal>
 
@@ -362,10 +360,5 @@ const onSeeAttendees = (session: SessionDto) => {
 </template>
 
 <style scoped>
-@reference "tailwindcss";
-
-.empty-card {
-  @apply w-full max-w-md mx-auto shadow-md rounded-xl mt-4
-}
 
 </style>

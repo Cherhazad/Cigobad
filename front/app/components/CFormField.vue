@@ -3,7 +3,7 @@
 import {FieldTypes} from "shared";
 import type {MenuItem} from "primevue/menuitem";
 import {calendarDateToDate, dateToCalendarDate} from "~~/utils/date";
-import type {CalendarDate} from "@internationalized/date";
+import {type CalendarDate, DateFormatter} from "@internationalized/date";
 
 defineProps({
   label: {
@@ -33,6 +33,10 @@ const dateModel = computed({
   }
 })
 
+const df = new DateFormatter('fr-FR', {
+  dateStyle: 'medium'
+})
+
 const model = defineModel()
 const emit = defineEmits(["update:modelValue"])
 </script>
@@ -59,13 +63,19 @@ const emit = defineEmits(["update:modelValue"])
         @update:model-value="emit('update:modelValue', $event)"
     />
 
-    <UCalendar
-        v-if="type === FieldTypes.date"
-        v-model="dateModel"
-        class="w-full"
-        :week-starts-on="1"
-        locale="fr"
-    />
+    <UPopover v-if="type === FieldTypes.date">
+      <UButton color="neutral" variant="subtle" icon="i-lucide-calendar">
+        {{ dateModel ? df.format(calendarDateToDate(dateModel)) : 'Sélectionner une date' }}
+      </UButton>
+      <template #content>
+        <UCalendar
+            v-model="dateModel"
+            class="w-full"
+            :week-starts-on="1"
+            locale="fr"
+        />
+      </template>
+    </UPopover>
 
     <UInput
         v-if="type === FieldTypes.tel"
@@ -83,6 +93,7 @@ const emit = defineEmits(["update:modelValue"])
         v-bind="$attrs"
         class="w-full"
         :items="items"
+        clear
         @update:model-value="emit('update:modelValue', $event)"
     />
 
@@ -93,6 +104,7 @@ const emit = defineEmits(["update:modelValue"])
         multiple
         :items="items"
         class="w-full"
+        clear
         @update:model-value="emit('update:modelValue', $event)"
     />
 

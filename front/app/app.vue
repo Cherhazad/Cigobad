@@ -13,5 +13,12 @@ import MainHeader from "./components/MainHeader.vue";
 </template>
 
 <style>
+:root {
+  --ui-bg: #ffffff;
+}
+
+.dark {
+  --ui-bg: #09090b; /* zinc-950 */
+}
 
 </style>
