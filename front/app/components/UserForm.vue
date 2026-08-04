@@ -40,83 +40,85 @@ const emits = defineEmits(['submitted'])
       :item="selectedUser"
       @submit="handleSubmit"
   >
-    <CFormField
-        v-model="selectedUser.firstName"
-        label="Prénom"
-        :type="FieldTypes.string"
-    />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <CFormField
+          v-model="selectedUser.firstName"
+          label="Prénom"
+          :type="FieldTypes.string"
+      />
 
-    <CFormField
-        v-model="selectedUser.lastName"
-        label="Nom"
-        :type="FieldTypes.string"
-    />
+      <CFormField
+          v-model="selectedUser.lastName"
+          label="Nom"
+          :type="FieldTypes.string"
+      />
 
-    <CFormField
-        v-model="selectedUser.email"
-        label="Email"
-        :type="FieldTypes.email"
-    />
+      <CFormField
+          v-model="selectedUser.email"
+          label="Email"
+          :type="FieldTypes.email"
+      />
 
-    <CFormField
-        v-model="selectedUser.birthDate"
-        label="Date de naissance"
-        required
-        :type="FieldTypes.date"
-    />
+      <CFormField
+          v-model="selectedUser.birthDate"
+          label="Date de naissance"
+          required
+          :type="FieldTypes.date"
+      />
 
-    <CFormField
-        v-model="selectedUser.phoneNumber"
-        label="Téléphone portable"
-        :type="FieldTypes.tel"
-    />
+      <CFormField
+          v-model="selectedUser.phoneNumber"
+          label="Téléphone portable"
+          :type="FieldTypes.tel"
+      />
 
-    <CFormField
-        v-model="selectedUser.city"
-        label="Dans quelle commune habitez-vous ?"
-        :type="FieldTypes.string"
-    />
+      <CFormField
+          v-model="selectedUser.city"
+          label="Dans quelle commune habitez-vous ?"
+          :type="FieldTypes.string"
+      />
 
-    <CFormField
-        v-model="selectedUser.category"
-        label="C'est pour votre enfant (à partir de 16 ans) ou pour vous ?"
-        :type="FieldTypes.select"
-        :items="categories"
-    />
+      <CFormField
+          v-model="selectedUser.category"
+          label="C'est pour votre enfant (à partir de 16 ans) ou pour vous ?"
+          :type="FieldTypes.select"
+          :items="categories"
+      />
 
-    <CFormField
-        v-model="selectedUser.session"
-        label="Créneaux"
-        :type="FieldTypes['select-multiple']"
-        :items="sessions"
-    />
+      <CFormField
+          v-model="selectedUser.session"
+          label="Créneaux"
+          :type="FieldTypes['select-multiple']"
+          :items="sessions"
+      />
 
-    <CFormField
-        v-model="selectedUser.level"
-        label="Niveau"
-        :type="FieldTypes.select"
-        :items="levels"
-    />
+      <CFormField
+          v-model="selectedUser.level"
+          label="Niveau"
+          :type="FieldTypes.select"
+          :items="levels"
+      />
 
-    <CFormField
-        v-model="selectedUser.formula"
-        label="Formule"
-        :type="FieldTypes.select"
-        :items="formulas"
-    />
+      <CFormField
+          v-model="selectedUser.formula"
+          label="Formule"
+          :type="FieldTypes.select"
+          :items="formulas"
+      />
 
-    <CFormField
-        v-model="selectedUser.discount"
-        label="Réduction"
-        :type="FieldTypes.select"
-        :items="discounts"
-    />
+      <CFormField
+          v-model="selectedUser.discount"
+          label="Réduction"
+          :type="FieldTypes.select"
+          :items="discounts"
+      />
 
-    <CFormField
-        v-model="selectedUser.comment"
-        label="Mais encore ?"
-        :type="FieldTypes.textarea"
-    />
+      <CFormField
+          v-model="selectedUser.comment"
+          label="Mais encore ?"
+          :type="FieldTypes.textarea"
+      />
+    </div>
   </CForm>
 
   <div v-if="isFormSent" class="space-y-8 w-full text-center text-lg">

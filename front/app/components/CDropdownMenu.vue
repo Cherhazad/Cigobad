@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type {MenuItem} from "primevue/menuitem";
 
-const menu = ref();
+import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 defineProps({
   menuItems: {
-    type: Array as PropType<MenuItem[]>,
+    type: Array as PropType<DropdownMenuItem[]>,
     required: true,
   },
   menuIcon: {
@@ -15,24 +14,27 @@ defineProps({
   menuLabel: {
     type: String,
     default: ''
+  },
+  border: {
+    type: Boolean,
+    default: false
   }
 })
 
-const toggle = (event: MouseEvent): void => {
-  menu.value.toggle(event);
-};
 </script>
 
 <template>
   <div class="flex justify-center">
-    <Menu ref="menu" :model="menuItems" popup class="w-40"/>
-    <Button
-        type="button" class="min-w-fit" :icon="menuIcon" variant="outlined" severity="secondary"
-        @click="toggle">
-      {{ menuLabel }}
-      <slot name="avatar"/>
-      <icon :name="menuIcon"/>
-    </Button>
+    <UDropdownMenu
+        :items="menuItems"
+        :ui="{
+          content: 'w-48'
+        }"
+    >
+      <UButton :icon="menuIcon" color="neutral" variant="outline">
+        {{ menuLabel }}
+      </UButton>
+    </UDropdownMenu>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {UserDto} from 'shared'
+import type {UserPayloadDto} from 'shared';
 import {useToast} from "primevue/usetoast";
 import {jwtDecode} from "jwt-decode";
 
@@ -12,10 +12,10 @@ export const useAuthStore = defineStore('auth', () => {
         default: () => null
     })
 
-    const user = computed<UserDto | null>(() => {
+    const user = computed<UserPayloadDto | null>(() => {
         if (!token.value) return null
         try {
-            return jwtDecode<UserDto>(token.value)
+            return jwtDecode<UserPayloadDto>(token.value)
         } catch {
             return null
         }
