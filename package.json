@@ -14,6 +14,8 @@
     "dev": "concurrently \"npm run dev:shared\" \"npm run dev:back\" \"npm run dev:front\""
   },
   "devDependencies": {
-    "concurrently": "^10.0.4"
+    "concurrently": "^10.0.4",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
   }
 }
