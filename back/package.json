@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "cd ../shared && npm install --include=dev && npm run build",
-    "build": "nest build && tsc-alias -p tsconfig.json",
+    "build": "npx nest build && npx tsc-alias -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
