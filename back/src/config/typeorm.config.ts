@@ -18,7 +18,7 @@ const AppDataSource = new DataSource({
 
   migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
 
-  migrationsRun: false,
+  migrationsRun: true,
 });
 
 export default AppDataSource;
