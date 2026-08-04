@@ -4,6 +4,16 @@ import { join } from 'node:path';
 
 config();
 
+console.log('ENV:', process.env.NODE_ENV);
+
+console.log(
+  'MIGRATIONS:',
+  join(
+    __dirname,
+    `../database/migrations/*.${process.env.NODE_ENV === 'production' ? 'js' : 'ts'}`,
+  ),
+);
+
 const AppDataSource = new DataSource({
   type: 'mysql',
   host: process.env.DATABASE_HOST,
