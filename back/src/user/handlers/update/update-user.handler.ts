@@ -79,7 +79,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       user.comment = comment;
     }
     if (avatar && user.avatar !== avatar) {
-      console.log('je passe dans lupdate', avatar);
       user.avatar = avatar;
     }
 

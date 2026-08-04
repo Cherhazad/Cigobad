@@ -7,6 +7,7 @@ const {user} = storeToRefs(auth)
 const config = useRuntimeConfig()
 const api = config.public.apiBase
 
+if (!user.value?.sub) await navigateTo('/login')
 
 const {data: userRef} = await useFetch<UserDto>(`${api}/user/${user?.value?.sub}`, {
   method: "GET",
@@ -53,7 +54,10 @@ const {data: userRef} = await useFetch<UserDto>(`${api}/user/${user?.value?.sub}
 
           <UCard class="w-full lg:w-2/3">
             <template #default>
-              <UserProfileForm :user="userRef"/>
+              <UserProfileForm
+                  v-if="userRef"
+                  :user="userRef"
+              />
             </template>
           </UCard>
         </div>

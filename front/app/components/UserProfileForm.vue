@@ -11,7 +11,7 @@ const discounts = Object.values(Discount)
 
 const props = defineProps({
   user: {
-    type: Object as PropType<UserDto | undefined>,
+    type: Object as PropType<UserDto>,
     required: true,
   }
 })
@@ -32,7 +32,7 @@ const onEditUser = async () => {
       onResponseError({response}) {
         toast.add({
           severity: 'error',
-          summary: "'Erreur lors de l'édition",
+          summary: "Erreur lors de l'édition",
           detail: response._data?.message,
           life: 3000
         })

@@ -65,7 +65,7 @@ const emit = defineEmits(["update:modelValue"])
 
     <UPopover v-if="type === FieldTypes.date">
       <UButton color="neutral" variant="subtle" icon="i-lucide-calendar">
-        {{ dateModel ? dateModel : 'Select a date' }}
+        {{ dateModel ? df.format(calendarDateToDate(dateModel)) : 'Sélectionner une date' }}
       </UButton>
       <template #content>
         <UCalendar
