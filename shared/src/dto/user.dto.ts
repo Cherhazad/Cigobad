@@ -1,7 +1,7 @@
 import {Category, Discount, Formula, Level, SessionEnum} from "../enums";
 
 export class UserDto {
-    readonly id!: number;
+    id!: number;
     firstName!: string;
     lastName!: string;
     birthDate!: Date;

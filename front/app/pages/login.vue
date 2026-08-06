@@ -2,6 +2,7 @@
 import {useAuthStore} from "~/stores/useAuthStore.ts";
 
 const auth = useAuthStore()
+const {loading} = storeToRefs(auth)
 
 const credentials = reactive({
   email: '',
@@ -31,7 +32,9 @@ const items = [
       <template #login>
         <UCard class="w-full">
           <template #default>
-            <CForm button-label="Se connecter" @submit="auth.login(credentials.email, credentials.password)">
+            <CForm
+                :loading="loading" button-label="Se connecter"
+                @submit="auth.login(credentials.email, credentials.password)">
               <div class="flex flex-col gap-6 p-4">
                 <CFormField
                     v-model="credentials.email"
@@ -55,7 +58,7 @@ const items = [
       <template #register>
         <UCard class="w-full">
           <template #default>
-            <CForm button-label="S'inscrire" @submit="auth.register(credentials)">
+            <CForm :loading="loading" button-label="S'inscrire" @submit="auth.register(credentials)">
               <div class="flex flex-col gap-6 p-4">
                 <CFormField
                     v-model="credentials.email"

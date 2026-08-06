@@ -13,12 +13,14 @@ import { User } from '../user/domain/entity/user.entity';
 import { FindAllSessionHandler } from './handlers/find-all/find-all-session.handler';
 import { UpdateSessionHandler } from './handlers/update/update-session.handler';
 import { DeleteByIdSessionHandler } from './handlers/delete-by-id/delete-by-id-session.handler';
+import { DeleteAttendeeOfASessionHandler } from './handlers/delete-attendee-of-a-session/delete-attendee-of-a-session.handler';
 
 const QueryHandlers = [FindByIdSessionHandler, FindAllSessionHandler];
 const CommandHandlers = [
   CreateSessionHandler,
   UpdateSessionHandler,
   DeleteByIdSessionHandler,
+  DeleteAttendeeOfASessionHandler,
 ];
 
 @Module({

@@ -5,12 +5,9 @@ definePageMeta({
 </script>
 
 <template>
-  <SessionCaroussel/>
+  <UserManagementAdmin/>
 </template>
 
 <style scoped>
-li {
-  list-style-type: circle;
-}
 
 </style>

@@ -17,6 +17,7 @@ import { UpdateResult } from 'typeorm';
 import { UpdateSessionCommand } from '../application/command/update-session.command';
 import { DeleteByIdSessionCommand } from '../application/command/delete-by-id-session.command';
 import { Public } from '../../auth/decorators/public.decorator';
+import { DeleteAttendeeOfASessionCommand } from '../application/command/delete-attendee-of-a-session.command';
 
 @Controller('session')
 export class SessionController {
@@ -53,5 +54,16 @@ export class SessionController {
   @Delete(':id')
   deleteSession(@Param('id', ParseIntPipe) id: number): Promise<UpdateResult> {
     return this.commandBus.execute(new DeleteByIdSessionCommand(id));
+  }
+
+  @Public()
+  @Patch(':sessionId/attendee/:userId')
+  deleteAttendee(
+    @Param('sessionId', ParseIntPipe) sessionId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<SessionDto> {
+    return this.commandBus.execute(
+      new DeleteAttendeeOfASessionCommand(sessionId, userId),
+    );
   }
 }

@@ -1,14 +1,7 @@
-<script setup lang="ts">
-import Club from "~/pages/club.vue";
-
-definePageMeta({
-  middleware: ['auth'],
-})
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <Club/>
+  <ClubPresentation/>
 </template>
 
 <style scoped>

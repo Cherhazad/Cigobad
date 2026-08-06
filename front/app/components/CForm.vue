@@ -18,6 +18,10 @@ defineProps({
   buttonClass: {
     type: String,
     default: ''
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -37,7 +41,7 @@ defineEmits(['submit'])
     <slot/>
 
     <div v-if="hasFooter" class="flex justify-end pt-2">
-      <UButton color="neutral" :class="buttonClass" @click="form?.submit()">
+      <UButton :loading="loading" color="neutral" :class="buttonClass" @click="form?.submit()">
         {{ buttonLabel }}
       </UButton>
     </div>
