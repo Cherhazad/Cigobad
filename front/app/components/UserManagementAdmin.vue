@@ -12,12 +12,8 @@ const toast = useToast()
 const modal = ref(false)
 const editModal = ref(false)
 const selectedUser = ref<UserDto>({} as UserDto)
-const token = useCookie<string | null>('token')
 
 const {data: fetchUsers, refresh} = await useFetch<UserDto[]>(`${api}/user`, {
-  headers: {
-    Authorization: `Bearer ${token.value}`
-  },
   method: 'GET',
 })
 

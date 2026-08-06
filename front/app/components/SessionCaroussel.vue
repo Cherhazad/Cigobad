@@ -342,8 +342,8 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
 
         <template #footer>
           <div class="flex justify-center gap-3 pb-6 px-6">
-            <UButton icon="i-lucide-plus" label="Create new" color="neutral" @click="onOpenCreateModal"/>
-            <UButton icon="i-lucide-reload" label="Refresh" color="neutral" @click="refresh()"/>
+            <UButton icon="i-lucide-plus" label="Créer" color="neutral" @click="onOpenCreateModal"/>
+            <UButton icon="i-lucide-refresh-cw" label="Rafraichir" color="neutral" @click="refresh()"/>
           </div>
         </template>
       </UCard>

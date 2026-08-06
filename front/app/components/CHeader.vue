@@ -18,7 +18,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
       label: user.value ? getName(user.value) : '',
       avatar: {
         text: `${user?.value?.firstName.charAt(0).toUpperCase()}${user?.value?.lastName.charAt(0).toUpperCase()}`,
-        loading: 'lazy'
       },
       type: 'label'
     }
@@ -32,6 +31,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
     {
       label: 'Mes sessions',
       icon: 'i-lucide-calendar',
+      to: '/mes-sessions'
     }
   ],
   [
@@ -51,7 +51,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
       to: '/sessions'
     }
   ],
-  user.value?.role === 'ADMIN' ? adminMenuItems.value : null,
+  user.value?.role === 'ADMIN' ? adminMenuItems.value : [],
   [
     {
       label: "Déconnexion",

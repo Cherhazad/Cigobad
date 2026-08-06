@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <Club/>
+  <ClubPresentation/>
 </template>
 
 <style scoped>
