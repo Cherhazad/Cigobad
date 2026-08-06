@@ -224,8 +224,9 @@ const onSeeAttendees = (session: SessionDto) => {
   sessionAttendeesModal.value = true
 }
 
-const isParticipating = (attendees: UserDto[], user: UserDto) => {
-  return attendees.map((a) => a.id).includes(user.id)
+const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
+  if (!user) return false
+  return attendees.some((a) => a.id === user.id)
 }
 </script>
 

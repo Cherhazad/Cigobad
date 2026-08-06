@@ -58,7 +58,7 @@ export class SessionController {
 
   @Public()
   @Patch(':sessionId/attendee/:userId')
-  deleteAttendee(
+  unsubscribeAttendee(
     @Param('sessionId', ParseIntPipe) sessionId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<SessionDto> {

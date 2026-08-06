@@ -15,7 +15,7 @@ const getName = (user: UserPayloadDto) => {
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: getName(user?.value),
+      label: user.value ? getName(user.value) : '',
       avatar: {
         text: `${user?.value?.firstName.charAt(0).toUpperCase()}${user?.value?.lastName.charAt(0).toUpperCase()}`,
         loading: 'lazy'

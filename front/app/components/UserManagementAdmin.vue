@@ -115,7 +115,7 @@ const deleteUser = async (user: UserDto) => {
     onResponseError({response}) {
       toast.add({
         severity: 'error',
-        summary: 'Erreur lors de la suppresion',
+        summary: 'Erreur lors de la suppression',
         detail: response._data?.message,
         life: 3000
       })
@@ -166,7 +166,7 @@ const onEditUser = async (user: UserDto) => {
       title="Éditer les informations"
   >
     <template #content>
-      <UserForm :user="selectedUser" @submitted="() => onSubmit(user)"/>
+      <UserForm :user="selectedUser" @submitted="(submittedUser) => onSubmit(submittedUser)"/>
     </template>
   </CModal>
 
