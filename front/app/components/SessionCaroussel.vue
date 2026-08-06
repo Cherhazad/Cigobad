@@ -261,6 +261,7 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
           :ui="{
                 item: 'flex justify-center py-2 sm:p-10',
                 dots: 'pb-4 sm:pb-6',
+                arrows: 'hidden sm:flex'
               }"
       >
         <UCard v-bind="item" :key="item.id" class="w-full max-w-xl mx-3 sm:mx-auto shadow-md rounded-2xl">
