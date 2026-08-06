@@ -4,6 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { IUserRepository } from '../../user/domain/port/user.repository';
 import { User } from '../../user/domain/entity/user.entity';
+import { UserPayloadDto } from 'shared';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: any): Promise<User> {
-    return this.userRepository.findById(payload.sub);
-  }
+  validate = async (payload: UserPayloadDto): Promise<User> => {
+    return await this.userRepository.findById(payload.sub);
+  };
 }

@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { UserDto } from 'shared';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from '../application/commands/create-user.command';
@@ -8,7 +18,10 @@ import { UpdateUserCommand } from '../application/commands/update-user.command';
 import { UpdateResult } from 'typeorm';
 import { DeleteByIdUserCommand } from '../application/commands/delete-by-id-user.command';
 import { Public } from '../../auth/decorators/public.decorator';
+import { RolesGuard } from '../../auth/guards/roles.guard';
+import { JwtGuard } from '../../auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('user')
 export class UserController {
   constructor(

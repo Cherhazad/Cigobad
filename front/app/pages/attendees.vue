@@ -1,16 +1,13 @@
 <script setup lang="ts">
 definePageMeta({
-  middleware: ['auth'],
+  middleware: ['auth', 'admin'],
 })
 </script>
 
 <template>
-  <SessionCaroussel/>
+  <UserManagementAdmin/>
 </template>
 
 <style scoped>
-li {
-  list-style-type: circle;
-}
 
 </style>

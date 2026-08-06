@@ -58,7 +58,7 @@ const onEditUser = async () => {
     />
   </div>
   <div class="flex-1 flex flex-col gap-2">
-    <CForm :has-footer="isEditMode" @submit="onEditUser">
+    <CForm :has-footer="isEditMode" button-label="Valider" @submit="onEditUser">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <CFormField
             v-model="updatedUser!.email"

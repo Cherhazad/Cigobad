@@ -58,7 +58,7 @@ declare class UserPayloadDto {
 }
 
 declare class UserDto {
-    readonly id: number;
+    id: number;
     firstName: string;
     lastName: string;
     birthDate: Date;
