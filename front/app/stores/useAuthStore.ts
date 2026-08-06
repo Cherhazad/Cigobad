@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', () => {
     const config = useRuntimeConfig()
     const api = config.public.apiBase
     const toast = useToast()
+    const loading = ref<boolean>(false);
 
     const token = useCookie<string | null>('token', {
         default: () => null
@@ -24,6 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
     const isAuthenticated = computed(() => !!token.value)
 
     const login = async (email: string, password: string) => {
+        loading.value = true
         const response = await $fetch<{ access_token: string }>(`${api}/auth/login`, {
             method: 'POST',
             body: {
@@ -37,6 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
                     detail: response._data?.message,
                     life: 3000
                 })
+                loading.value = false
             }
         })
 
@@ -50,6 +53,7 @@ export const useAuthStore = defineStore('auth', () => {
                 life: 3000
             })
             await navigateTo('/sessions')
+            loading.value = false
         }
     }
 
@@ -89,6 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
         token,
         user,
         isAuthenticated,
+        loading,
         login,
         logout,
         register,

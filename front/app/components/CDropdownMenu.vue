@@ -4,7 +4,7 @@ import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 defineProps({
   menuItems: {
-    type: Array as PropType<DropdownMenuItem[]>,
+    type: Array as PropType<DropdownMenuItem[] | DropdownMenuItem[][]>,
     required: true,
   },
   menuIcon: {
@@ -31,7 +31,7 @@ defineProps({
           content: 'w-48'
         }"
     >
-      <UButton :icon="menuIcon" color="neutral" variant="outline">
+      <UButton :icon="menuIcon" color="neutral" :variant="border ? 'outline' : 'ghost'">
         {{ menuLabel }}
       </UButton>
     </UDropdownMenu>

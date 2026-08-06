@@ -12,6 +12,9 @@ import { RegisterHandler } from './handlers/register.handler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IUserRepository } from '../user/domain/port/user.repository';
 import { MysqlUserRepository } from '../user/infrastructure/mysql-user.repository';
+import { JwtGuard } from './guards/jwt.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guards/roles.guard';
 
 const CommandHandlers = [LoginHandler, RegisterHandler];
 
@@ -39,6 +42,14 @@ const CommandHandlers = [LoginHandler, RegisterHandler];
     {
       provide: IUserRepository,
       useClass: MysqlUserRepository,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })
