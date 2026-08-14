@@ -30,8 +30,6 @@ export class ForgotPasswordHandler implements ICommandHandler<ForgotPasswordComm
       },
     );
 
-    console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY?.substring(0, 5));
-
     await this.authRepository.saveResetToken(user.email, token);
     await this.emailService.sendResetPasswordEmail(user.email, token);
 

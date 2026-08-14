@@ -11,7 +11,7 @@ export class EmailService {
     if (process.env.NODE_ENV === 'production') {
       const resend = new Resend(process.env.RESEND_API_KEY);
       const { data, error } = await resend.emails.send({
-        from: 'noreply@tondomaine.com',
+        from: 'onboarding@resend.dev',
         to: email,
         subject: 'Réinitialisation de votre mot de passe',
         text,
