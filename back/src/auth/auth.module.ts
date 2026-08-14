@@ -15,8 +15,16 @@ import { MysqlUserRepository } from '../user/infrastructure/mysql-user.repositor
 import { JwtGuard } from './guards/jwt.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
+import { ForgotPasswordHandler } from './handlers/forgot-password.handler';
+import { EmailModule } from '../email/email.module';
+import { ResetPasswordHandler } from './handlers/reset-password.handler';
 
-const CommandHandlers = [LoginHandler, RegisterHandler];
+const CommandHandlers = [
+  LoginHandler,
+  RegisterHandler,
+  ForgotPasswordHandler,
+  ResetPasswordHandler,
+];
 
 @Module({
   imports: [
@@ -30,6 +38,7 @@ const CommandHandlers = [LoginHandler, RegisterHandler];
       }),
       inject: [ConfigService],
     }),
+    EmailModule,
   ],
   controllers: [AuthController],
   providers: [

@@ -10,12 +10,26 @@ export class MysqlAuthRepository {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  findByEmail(email: string): Promise<User | null> {
+  findByEmail = (email: string): Promise<User | null> => {
     return this.userRepository.findOne({ where: { email } });
-  }
+  };
 
-  async register(user: Partial<User>): Promise<User> {
+  register = async (user: Partial<User>): Promise<User> => {
     const newUser = this.userRepository.create(user);
     return this.userRepository.save(newUser);
-  }
+  };
+
+  saveResetToken = async (email: string, token: string): Promise<void> => {
+    await this.userRepository.update({ email }, { resetToken: token });
+  };
+
+  updatePassword = async (
+    email: string,
+    hashedPassword: string,
+  ): Promise<void> => {
+    await this.userRepository.update(
+      { email },
+      { password: hashedPassword, resetToken: null },
+    );
+  };
 }

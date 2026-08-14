@@ -9,5 +9,6 @@ export enum FieldTypes {
     'select-multiple' = 'select-multiple',
     'checkbox' = 'checkbox',
     'email' = 'email',
+    'password' = 'password',
 
 }

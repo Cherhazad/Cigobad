@@ -1,4 +1,4 @@
-import {Category, Discount, Formula, Level, SessionEnum} from "../enums";
+import {Category, Discount, Formula, Level, Role, SessionEnum} from "../enums";
 
 export class UserDto {
     id!: number;
@@ -16,4 +16,5 @@ export class UserDto {
     level!: Level;
     comment!: string;
     avatar!: string;
+    role!: Role;
 }

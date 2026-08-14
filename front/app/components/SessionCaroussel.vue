@@ -83,7 +83,7 @@ const onEditSession = async (session: SessionDto) => {
     method: 'PATCH',
     body: session,
     onResponseError({response}) {
-      toast.add({severity: 'error', summary: "'Erreur lors de l'édition", detail: response._data?.message, life: 3000})
+      toast.add({severity: 'error', summary: "Erreur lors de l'édition", detail: response._data?.message, life: 3000})
     }
   })
   if (data) {

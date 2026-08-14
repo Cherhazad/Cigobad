@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './controllers/user.controller';
+import { UserController } from './controller/user.controller';
 import { IUserRepository } from './domain/port/user.repository';
 import { MysqlUserRepository } from './infrastructure/mysql-user.repository';
 import { User } from './domain/entity/user.entity';

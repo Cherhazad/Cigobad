@@ -6,7 +6,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { CreateSessionHandler } from './handlers/create/create-session.handler';
 import { FindByIdSessionHandler } from './handlers/find-by-id/find-by-id-session.handler';
 import { MysqlSessionRepository } from './infrastructure/mysql-session.repository';
-import { SessionController } from './controllers/session.controller';
+import { SessionController } from './controller/session.controller';
 import { MysqlUserRepository } from '../user/infrastructure/mysql-user.repository';
 import { IUserRepository } from '../user/domain/port/user.repository';
 import { User } from '../user/domain/entity/user.entity';
