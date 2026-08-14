@@ -74,6 +74,7 @@ export const useAuthStore = defineStore('auth', () => {
         })
 
         await login(credentials.email, credentials.password)
+        isSubscription.value = false
 
         if (register) {
             toast.add({
@@ -83,7 +84,6 @@ export const useAuthStore = defineStore('auth', () => {
                 life: 3000
             })
             await navigateTo('/sessions')
-            isSubscription.value = false
         }
     }
 
@@ -93,7 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     const forgotPassword = async (email: string) => {
-        const forgotPassword = await $fetch<{ email: string }>(`${api}/auth/forgot-password`, {
+        const forgotPassword = await $fetch<{ message: string }>(`${api}/auth/forgot-password`, {
             method: 'POST',
             body: {
                 email,

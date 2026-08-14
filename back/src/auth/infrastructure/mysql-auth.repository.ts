@@ -29,7 +29,7 @@ export class MysqlAuthRepository {
   ): Promise<void> => {
     await this.userRepository.update(
       { email },
-      { password: hashedPassword, resetToken: undefined },
+      { password: hashedPassword, resetToken: null },
     );
   };
 }

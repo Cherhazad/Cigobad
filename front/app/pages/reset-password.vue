@@ -44,7 +44,7 @@ const items = [
                 <UInput
                     v-model="credentials.newPassword"
                     class="w-full"
-                    :type="showPassword ? 'string' : 'password'"
+                    :type="showPassword ? 'text' : 'password'"
                     placeholder="Mot de passe"
                 />
                 <UButton

@@ -143,7 +143,6 @@ const onEditUser = async (user: UserDto) => {
 }
 
 const onEditUserRole = async (user: UserDto, value: boolean) => {
-  console.log(value);
   const data = await $fetch(`${api}/user/${user.id}`, {
     method: 'PATCH',
     body: {
