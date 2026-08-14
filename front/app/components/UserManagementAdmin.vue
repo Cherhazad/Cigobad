@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {useAuthStore} from "~/stores/useAuthStore.ts";
 import type {UserDto} from "shared";
+import {Role} from "shared";
 import {useToast} from "primevue/usetoast";
 import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
@@ -21,6 +22,10 @@ const columns = [
   {
     field: 'licenceNumber',
     header: 'N° Licence FFBaD',
+  },
+  {
+    field: 'role',
+    header: 'ADMIN'
   },
   {
     field: 'firstName',
@@ -136,6 +141,28 @@ const onEditUser = async (user: UserDto) => {
     toast.add({severity: 'success', summary: 'Modifications', detail: 'Modifications enregistrées.', life: 3000})
   }
 }
+
+const onEditUserRole = async (user: UserDto, value: boolean) => {
+  console.log(value);
+  const data = await $fetch(`${api}/user/${user.id}`, {
+    method: 'PATCH',
+    body: {
+      id: user.id,
+      role: value ? Role.ADMIN : Role.USER,
+    },
+    onResponseError({response}) {
+      toast.add({
+        severity: 'error',
+        summary: "'Erreur lors de l'édition du rôle",
+        detail: response._data?.message,
+        life: 3000
+      })
+    }
+  })
+  if (data) {
+    toast.add({severity: 'success', summary: 'Modification du rôle', detail: 'Modifications enregistrées.', life: 3000})
+  }
+}
 </script>
 
 <template>
@@ -150,6 +177,12 @@ const onEditUser = async (user: UserDto) => {
     <CTable v-if="fetchUsers" :items="fetchUsers" :columns="columns">
       <template #item-birthDate="{ data }">
         {{ new Date(data.birthDate).toLocaleDateString('fr-FR') }}
+      </template>
+      <template #item-role="{data}">
+        <CFormField
+            :default-value="data.role === Role.ADMIN" type="checkbox"
+            @update:model-value="(value: boolean) => onEditUserRole(data, value)"
+        />
       </template>
       <template #item-actions="{ item }">
         <CDropdownMenu :menu-items="getItems(item)" menu-icon="i-lucide-ellipsis-vertical"/>

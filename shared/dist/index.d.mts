@@ -20,7 +20,8 @@ declare enum FieldTypes {
     'select' = "select",
     'select-multiple' = "select-multiple",
     'checkbox' = "checkbox",
-    'email' = "email"
+    'email' = "email",
+    'password' = "password"
 }
 
 declare enum Formula {
@@ -73,6 +74,7 @@ declare class UserDto {
     level: Level;
     comment: string;
     avatar: string;
+    role: Role;
 }
 
 declare class SessionDto {

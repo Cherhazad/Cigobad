@@ -5,6 +5,9 @@ import { RegisterCommand } from '../application/command/register.command';
 import { UserDto } from 'shared';
 import { Public } from '../decorators/public.decorator';
 import type { Request } from 'express';
+import { ResetPasswordCommand } from '../application/command/reset-password.command';
+import { ForgotPasswordCommand } from '../application/command/forgot-password.command';
+import { UpdateResult } from 'typeorm';
 
 @Controller('auth')
 export class AuthController {
@@ -44,5 +47,21 @@ export class AuthController {
   @Get('me')
   getProfile(@Req() req: Request): Express.User | undefined {
     return req.user;
+  }
+
+  @Public()
+  @Post('forgot-password')
+  async forgotPassword(@Body() body: { email: string }): Promise<UpdateResult> {
+    return this.commandBus.execute(new ForgotPasswordCommand(body.email));
+  }
+
+  @Public()
+  @Post('reset-password')
+  async resetPassword(
+    @Body() body: { token: string; newPassword: string },
+  ): Promise<UpdateResult> {
+    return this.commandBus.execute(
+      new ResetPasswordCommand(body.token, body.newPassword),
+    );
   }
 }

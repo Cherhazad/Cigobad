@@ -38,6 +38,7 @@ var FieldTypes = /* @__PURE__ */ ((FieldTypes2) => {
   FieldTypes2["select-multiple"] = "select-multiple";
   FieldTypes2["checkbox"] = "checkbox";
   FieldTypes2["email"] = "email";
+  FieldTypes2["password"] = "password";
   return FieldTypes2;
 })(FieldTypes || {});
 

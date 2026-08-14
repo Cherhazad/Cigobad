@@ -27,6 +27,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       lastName,
       firstName,
       avatar,
+      role,
     } = command.user;
 
     if (!id) {
@@ -80,6 +81,9 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     }
     if (avatar && user.avatar !== avatar) {
       user.avatar = avatar;
+    }
+    if (role && user.role !== role) {
+      user.role = role;
     }
 
     return this.userRepository.update(user);

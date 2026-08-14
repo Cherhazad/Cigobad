@@ -38,7 +38,6 @@ const df = new DateFormatter('fr-FR', {
 })
 
 const model = defineModel()
-const emit = defineEmits(["update:modelValue"])
 </script>
 
 <template>
@@ -50,7 +49,6 @@ const emit = defineEmits(["update:modelValue"])
         type="string"
         class="w-full"
         :placeholder="placeholder"
-        @update:model-value="emit('update:modelValue', $event)"
     />
 
     <UInput
@@ -60,7 +58,6 @@ const emit = defineEmits(["update:modelValue"])
         v-bind="$attrs"
         class="w-full"
         :placeholder="placeholder"
-        @update:model-value="emit('update:modelValue', $event)"
     />
 
     <UPopover v-if="type === FieldTypes.date">
@@ -84,7 +81,15 @@ const emit = defineEmits(["update:modelValue"])
         v-bind="$attrs"
         class="w-full"
         :placeholder="placeholder"
-        @update:model-value="emit('update:modelValue', $event)"
+    />
+
+    <UInput
+        v-if="type === FieldTypes.password"
+        v-model="model"
+        type="password"
+        v-bind="$attrs"
+        class="w-full"
+        :placeholder="placeholder"
     />
 
     <USelectMenu
@@ -94,7 +99,6 @@ const emit = defineEmits(["update:modelValue"])
         class="w-full"
         :items="items"
         clear
-        @update:model-value="emit('update:modelValue', $event)"
     />
 
     <USelectMenu
@@ -105,7 +109,6 @@ const emit = defineEmits(["update:modelValue"])
         :items="items"
         class="w-full"
         clear
-        @update:model-value="emit('update:modelValue', $event)"
     />
 
     <UTextarea
@@ -121,7 +124,6 @@ const emit = defineEmits(["update:modelValue"])
         v-model="model"
         v-bind="$attrs"
         class="w-full"
-        @update:model-value="emit('update:modelValue', $event)"
     />
 
     <UInputNumber
@@ -130,7 +132,6 @@ const emit = defineEmits(["update:modelValue"])
         :placeholder="placeholder"
         v-bind="$attrs"
         class="w-full"
-        @update:model-value="emit('update:modelValue', $event)"
     />
 
   </UFormField>

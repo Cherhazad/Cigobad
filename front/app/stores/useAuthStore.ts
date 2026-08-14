@@ -8,6 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
     const api = config.public.apiBase
     const toast = useToast()
     const loading = ref<boolean>(false);
+    const isSubscription = ref<boolean>(false);
 
     const token = useCookie<string | null>('token', {
         default: () => null
@@ -45,7 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         token.value = response.access_token
 
-        if (response) {
+        if (response && !isSubscription.value) {
             toast.add({
                 severity: 'success',
                 summary: "Connexion",
@@ -58,6 +59,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     const register = async (credentials: { email: string, password: string, firstName: string, lastName: string }) => {
+        isSubscription.value = true
         const register = await $fetch<{ access_token: string }>(`${api}/auth/register`, {
             method: 'POST',
             body: credentials,
@@ -81,12 +83,63 @@ export const useAuthStore = defineStore('auth', () => {
                 life: 3000
             })
             await navigateTo('/sessions')
+            isSubscription.value = false
         }
     }
 
     const logout = async () => {
         token.value = null
         navigateTo('/login')
+    }
+
+    const forgotPassword = async (email: string) => {
+        const forgotPassword = await $fetch<{ email: string }>(`${api}/auth/forgot-password`, {
+            method: 'POST',
+            body: {
+                email,
+            },
+            onResponseError({response}) {
+                toast.add({
+                    severity: 'error',
+                    summary: "Erreur lors de l'envoi du lien par mail",
+                    detail: response._data?.message,
+                    life: 3000
+                })
+            }
+        })
+        if (forgotPassword) {
+            toast.add({
+                severity: 'success',
+                summary: "Envoi du lien par mail",
+                detail: "Le lien de modification du mot de passe a bien été envoyé.",
+                life: 3000
+            })
+        }
+    }
+
+    const resetPassword = async (credentials: { token: string, newPassword: string }) => {
+        const resetPassword = await $fetch<{ access_token: string }>(`${api}/auth/reset-password`, {
+            method: 'POST',
+            body: credentials,
+            onResponseError({response}) {
+                toast.add({
+                    severity: 'error',
+                    summary: "Erreur lors de la modification du mot de passe",
+                    detail: response._data?.message,
+                    life: 3000
+                })
+            }
+        })
+
+        if (resetPassword) {
+            toast.add({
+                severity: 'success',
+                summary: "Modification de mot de passe",
+                detail: 'Mot de passe modifié avec succès.',
+                life: 3000
+            })
+            await navigateTo('/sessions')
+        }
     }
 
     return {
@@ -97,5 +150,7 @@ export const useAuthStore = defineStore('auth', () => {
         login,
         logout,
         register,
+        forgotPassword,
+        resetPassword,
     }
 })

@@ -25,6 +25,9 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
+  resetToken: string;
+
+  @Column({ nullable: true })
   avatar: string;
 
   @Column({ nullable: true })
