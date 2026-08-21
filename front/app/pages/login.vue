@@ -59,8 +59,6 @@ const items = [
                       @click="showPassword = !showPassword"
                   />
                 </div>
-                <a class="text-xs flex justify-end" href="/forgot-password">Mot de
-                  passe oublié ?</a>
               </div>
             </CForm>
           </template>
@@ -78,13 +76,22 @@ const items = [
                     placeholder="Email"
                     type="email"
                 />
-                <CFormField
-                    v-model="credentials.password"
-                    label="Mot de passe"
-                    placeholder="Mot de passe"
-                    type="string"
-                />
-
+                <div class="flex gap-2">
+                  <CFormField
+                      v-model="credentials.password"
+                      label="Mot de passe"
+                      class="w-full"
+                      placeholder="Mot de passe"
+                      :type="showPassword ? 'string' : 'password'"
+                  />
+                  <UButton
+                      class="mt-auto"
+                      color="neutral"
+                      variant="ghost"
+                      :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                      @click="showPassword = !showPassword"
+                  />
+                </div>
                 <CFormField
                     v-model="credentials.firstName"
                     label="Prénom"
