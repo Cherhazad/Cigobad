@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Resend } from 'resend';
 import * as nodemailer from 'nodemailer';
 
 @Injectable()
@@ -9,7 +8,9 @@ export class EmailService {
     const text = `Bonjour,\n\nPour réinitialiser votre mot de passe, cliquez ici : ${url}\n\nCe lien expire dans 1 heure.`;
 
     if (process.env.NODE_ENV === 'production') {
-      const resend = new Resend(process.env.RESEND_API_KEY);
+      //il faut payer un nom de domaine pour faire fonction le mailer
+      return;
+      /*const resend = new Resend(process.env.RESEND_API_KEY);
       const { data, error } = await resend.emails.send({
         from: 'onboarding@resend.dev',
         to: email,
@@ -17,7 +18,7 @@ export class EmailService {
         text,
       });
       console.log('Resend data:', data);
-      console.log('Resend error:', error);
+      console.log('Resend error:', error);*/
     } else {
       const testAccount = await nodemailer.createTestAccount();
       const transporter = nodemailer.createTransport({

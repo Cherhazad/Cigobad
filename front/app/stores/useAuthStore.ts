@@ -60,6 +60,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const register = async (credentials: { email: string, password: string, firstName: string, lastName: string }) => {
         isSubscription.value = true
+        loading.value = true
         const register = await $fetch<{ access_token: string }>(`${api}/auth/register`, {
             method: 'POST',
             body: credentials,
@@ -70,6 +71,7 @@ export const useAuthStore = defineStore('auth', () => {
                     detail: response._data?.message,
                     life: 3000
                 })
+                loading.value = false
             }
         })
 
@@ -84,6 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
                 life: 3000
             })
             await navigateTo('/sessions')
+            loading.value = false
         }
     }
 
