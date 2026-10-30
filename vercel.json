@@ -1,0 +1,20 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "shared": {
+      "root": "shared"
+    },
+    "front": {
+      "root": "front",
+      "framework": "nuxtjs"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "front"
+      }
+    }
+  ]
+}
