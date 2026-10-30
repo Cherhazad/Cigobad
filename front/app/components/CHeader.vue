@@ -7,6 +7,8 @@ import BadmintonIcon from '@iconify-vue/icon-park-outline/badminton';
 
 const auth = useAuthStore()
 const {user, isAuthenticated} = storeToRefs(auth)
+const config = useRuntimeConfig()
+const isDemo = config.public.demoMode
 
 const getName = (user: UserPayloadDto) => {
   return user.firstName + " " + user.lastName
@@ -15,9 +17,9 @@ const getName = (user: UserPayloadDto) => {
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: user.value ? getName(user.value) : '',
+      label: user.value ? getName(user.value) : 'Jane Doe',
       avatar: {
-        text: `${user?.value?.firstName.charAt(0).toUpperCase()}${user?.value?.lastName.charAt(0).toUpperCase()}`,
+        text: user.value ? `${user?.value?.firstName.charAt(0).toUpperCase()}${user?.value?.lastName.charAt(0).toUpperCase()}` : "JD",
       },
       type: 'label'
     }
@@ -52,14 +54,14 @@ const items = computed<DropdownMenuItem[][]>(() => [
     }
   ],
   user.value?.role === 'ADMIN' ? adminMenuItems.value : [],
-  [
+  user.value ? [
     {
       label: "Déconnexion",
       onSelect: auth.logout,
       color: 'error',
       icon: 'i-lucide-log-out'
     }
-  ],
+  ] : [],
 ])
 
 const adminMenuItems = computed(() => [
@@ -86,7 +88,7 @@ const adminMenuItems = computed(() => [
     <template #right>
       <CColorModeButton/>
       <UButton
-          v-if="!isAuthenticated"
+          v-if="!isAuthenticated && !isDemo"
           icon="i-lucide-user"
           color="neutral"
           variant="ghost"
@@ -95,7 +97,7 @@ const adminMenuItems = computed(() => [
       />
 
       <CDropdownMenu
-          v-if="isAuthenticated"
+          v-if="isAuthenticated || isDemo"
           :menu-items="items"
           menu-icon="i-lucide-menu"
           :border="false"

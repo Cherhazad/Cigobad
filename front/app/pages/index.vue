@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <ClubPresentation/>
+  <SessionCaroussel/>
 </template>
 
 <style scoped>
