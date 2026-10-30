@@ -21,7 +21,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiBase: process.env.API_URL,
-            PRIMEUI_LICENSE: process.env.NUXT_PUBLIC_PRIMEUI_LICENSE
+            PRIMEUI_LICENSE: process.env.NUXT_PUBLIC_PRIMEUI_LICENSE,
+            demoMode: process.env.NUXT_PUBLIC_DEMO_MODE
         }
     },
 

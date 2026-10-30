@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {UserDto} from "shared";
+import type {SessionDto} from "shared";
 
-const sessions = ref<UserDto[]>([])
+const sessions = ref<SessionDto[]>([])
 </script>
 
 <template>

@@ -10,22 +10,27 @@ const config = useRuntimeConfig()
 const api = config.public.apiBase
 const isFormSent = ref<boolean>(false)
 const toast = useToast()
+const isDemo = config.public.demoMode
 
 const onCreateUser = async (user: UserDto) => {
-  const data = await $fetch(`${api}/user`, {
-    method: 'POST',
-    body: user,
-    onResponseError({response}) {
-      toast.add({severity: 'error', summary: 'data fetch error', detail: response._data?.message, life: 3000})
-    }
-  })
-  if (data) {
-    toast.add({
-      severity: 'success',
-      summary: 'Inscription utilisateur',
-      detail: 'Le formulaire a bien été envoyé.',
-      life: 3000
+  if (!isDemo) {
+    const data = await $fetch(`${api}/user`, {
+      method: 'POST',
+      body: user,
+      onResponseError({response}) {
+        toast.add({severity: 'error', summary: 'data fetch error', detail: response._data?.message, life: 3000})
+      }
     })
+    if (data) {
+      toast.add({
+        severity: 'success',
+        summary: 'Inscription utilisateur',
+        detail: 'Le formulaire a bien été envoyé.',
+        life: 3000
+      })
+      isFormSent.value = true
+    }
+  } else {
     isFormSent.value = true
   }
 }
