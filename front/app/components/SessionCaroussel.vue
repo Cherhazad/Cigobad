@@ -113,7 +113,6 @@ const onOpenCreateModal = () => {
 
 const onCreateSession = async (session: SessionDto) => {
   if (isDemo) {
-    console.log('je passe ici')
     demoSessions.value.push(session)
   } else {
     const data = await $fetch(`${api}/session`, {
