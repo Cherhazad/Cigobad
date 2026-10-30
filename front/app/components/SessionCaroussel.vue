@@ -10,6 +10,7 @@ const api = config.public.apiBase
 const toast = useToast()
 const auth = useAuthStore()
 const {user} = storeToRefs(auth)
+const isDemo = config.public.demoMode
 
 const deleteModal = ref(false)
 const formModal = ref(false)
@@ -20,28 +21,78 @@ const selectedSession = ref<SessionDto | undefined>()
 const users = ref<{ label: string, value: UserDto }[]>([])
 const attendeeRef = ref<UserDto>()
 
-const {data: fetchSessions, refresh} = await useFetch<SessionDto[]>(`${api}/session`, {
-  method: 'GET',
-})
+const demoAttendees = [
+  {
+    id: 1,
+    firstName: "Julien",
+    lastName: "Doré",
+  },
+  {
+    id: 2,
+    firstName: "Mylène",
+    lastName: "Farmer"
+  }
+] as UserDto[]
 
-const {data: fetchUsers} = await useFetch<UserDto[]>(`${api}/user`, {
-  method: 'GET',
-})
+const demoSessions = computed<SessionDto[]>(() => [
+  {
+    id: 1,
+    name: "Lundi",
+    level: Level.Debutant,
+    hours: "20h - 23h",
+    date: new Date(),
+    openedBy: "Jane Doe",
+    attendees: demoAttendees as UserDto[],
+  },
+  {
+    id: 1,
+    name: "Mardi",
+    level: Level.Confirme,
+    hours: "20h - 23h",
+    date: new Date(),
+    openedBy: "Jane Doe",
+    attendees: [] as UserDto[],
+  }
+])
 
-const {data: authenticatedUser} = await useFetch<UserDto>(`${api}/user/${user.value?.sub}`, {
-  method: 'GET',
-})
+const fetchUsers = ref()
+const authenticatedUser = ref()
+const fetchSessions = ref()
+
+const refreshSessions = async () => {
+  if (!isDemo) {
+    fetchSessions.value = await $fetch<SessionDto[]>(`${api}/session`, {
+      method: 'GET',
+    })
+  } else {
+    return demoSessions.value
+  }
+}
 
 onMounted(async () => {
-  sessions.value = fetchSessions.value
-  if (fetchUsers.value && fetchUsers.value.length > 0) {
-    users.value = fetchUsers.value.map((user: UserDto) => {
-      return {
-        label: user?.lastName?.toUpperCase() + ' ' + user?.firstName,
-        value: user
-      }
+  if (isDemo) {
+    sessions.value = demoSessions.value
+  } else {
+    fetchUsers.value = await $fetch<UserDto[]>(`${api}/user`, {
+      method: 'GET',
     })
+    authenticatedUser.value = await $fetch<UserDto>(`${api}/user/${user.value?.sub}`, {
+      method: 'GET',
+    })
+    fetchSessions.value = await $fetch<SessionDto[]>(`${api}/session`, {
+      method: 'GET',
+    })
+    sessions.value = fetchSessions.value
+    if (fetchUsers.value && fetchUsers.value.length > 0) {
+      users.value = fetchUsers.value.map((user: UserDto) => {
+        return {
+          label: user?.lastName?.toUpperCase() + ' ' + user?.firstName,
+          value: user
+        }
+      })
+    }
   }
+
 })
 
 watch(fetchSessions, (newValue, oldValue) => {
@@ -61,20 +112,30 @@ const onOpenCreateModal = () => {
 }
 
 const onCreateSession = async (session: SessionDto) => {
-  const data = await $fetch(`${api}/session`, {
-    method: 'POST',
-    body: session,
-    onResponseError({response}) {
-      toast.add({severity: 'error', summary: 'Erreur lors de la création', detail: response._data?.message, life: 3000})
-    }
-  })
-  if (data) {
-    toast.add({
-      severity: 'success',
-      summary: "Création d'une session",
-      detail: 'Session créée avec succès.',
-      life: 3000
+  if (isDemo) {
+    console.log('je passe ici')
+    demoSessions.value.push(session)
+  } else {
+    const data = await $fetch(`${api}/session`, {
+      method: 'POST',
+      body: session,
+      onResponseError({response}) {
+        toast.add({
+          severity: 'error',
+          summary: 'Erreur lors de la création',
+          detail: response._data?.message,
+          life: 3000
+        })
+      }
     })
+    if (data) {
+      toast.add({
+        severity: 'success',
+        summary: "Création d'une session",
+        detail: 'Session créée avec succès.',
+        life: 3000
+      })
+    }
   }
 }
 
@@ -92,6 +153,10 @@ const onEditSession = async (session: SessionDto) => {
 }
 
 const onParticipateSession = async (session: SessionDto, user: UserDto) => {
+  if (isDemo) {
+    return alert('Vous auriez été inscrit.e en local ;)')
+  }
+
   const data = await $fetch(`${api}/session/${session.id}`, {
     method: 'PATCH',
     body: {
@@ -116,7 +181,7 @@ const onParticipateSession = async (session: SessionDto, user: UserDto) => {
     })
     sessionSubsModal.value = false
     attendeeRef.value = undefined
-    await refresh()
+    await refreshSessions()
   }
 }
 
@@ -139,7 +204,7 @@ const onUnsubscribe = async (session: SessionDto, user: UserDto) => {
       detail: 'Votre inscription a bien été retirée.',
       life: 3000
     })
-    await refresh()
+    await refreshSessions()
   }
 }
 
@@ -160,17 +225,17 @@ const onDeleteSession = async (session: SessionDto) => {
     selectedSession.value = undefined
   }
   deleteModal.value = false
-  await refresh()
+  await refreshSessions()
 }
 
 const onSubmit = async (session: SessionDto) => {
   if (session.id) {
     await onEditSession(session)
-    await refresh()
+    await refreshSessions()
     formModal.value = false
   } else {
     await onCreateSession(session)
-    await refresh()
+    await refreshSessions()
     formModal.value = false
   }
 }
@@ -226,7 +291,9 @@ const onSeeAttendees = (session: SessionDto) => {
 
 const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
   if (!user) return false
-  return attendees.some((a) => a.id === user.id)
+  if (attendees?.length > 0) {
+    return attendees.some((a) => a.id === user.id)
+  }
 }
 </script>
 
@@ -264,14 +331,14 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
                 arrows: 'hidden sm:flex'
               }"
       >
-        <UCard v-bind="item" :key="item.id" class="w-full max-w-xl mx-3 sm:mx-auto shadow-md rounded-2xl">
+        <UCard v-bind="item" :key="item?.id" class="w-full max-w-xl mx-3 sm:mx-auto shadow-md rounded-2xl">
           <template #header>
             <div class="flex gap-2 sm:mt-4 mr-0 lg:mr-4">
               <div class="flex flex-col gap-2">
                 <span class="text-xl md:text-4xl font-bold mr-auto">{{ item?.name }}</span>
                 <Tag
-                    :severity="getLevelColor(item.level)"
-                    :value="`Niveau ${formatLevel(item.level).toLowerCase()}`"/>
+                    :severity="getLevelColor(item?.level)"
+                    :value="`Niveau ${formatLevel(item?.level)?.toLowerCase()}`"/>
               </div>
               <div class="ml-auto">
                 <CDropdownMenu :menu-items="getItems(item)" menu-icon="i-lucide-ellipsis-vertical"/>
@@ -283,14 +350,14 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
             <div class="space-y-1 sm:space-y-3 flex flex-col">
               <div class="mb-2">
                 <Tag
-                    :severity="`${item.attendees.length >= 36 ? 'danger' : 'success'}`"
-                    :value="`${item.attendees.length >= 36 ? 'COMPLET' : 'DISPONIBLE'}`"
+                    :severity="`${item?.attendees?.length >= 36 ? 'danger' : 'success'}`"
+                    :value="`${item?.attendees?.length >= 36 ? 'COMPLET' : 'DISPONIBLE'}`"
                 />
               </div>
-              <div v-if="item.date" class="flex items-center gap-2">
+              <div v-if="item?.date" class="flex items-center gap-2">
                 <UIcon name="i-lucide-calendar"/>
                 <span class="font-bold text-base sm:text-xl">{{
-                    new Date(item.date).toLocaleDateString('fr-FR')
+                    new Date(item?.date).toLocaleDateString('fr-FR')
                   }}</span>
               </div>
               <div class="flex items-center gap-2">
@@ -301,9 +368,9 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
               </div>
               <div class="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div class="flex items-center gap-2">
-                  <span><b>Participants: </b> {{ item.attendees.length }}/36</span>
+                  <span><b>Participants: </b> {{ item?.attendees?.length }}/36</span>
                   <UButton
-                      v-if="item.attendees.length"
+                      v-if="item?.attendees?.length"
                       v-tooltip="'Voir les participants'"
                       icon="i-lucide-eye"
                       color="neutral"
@@ -314,11 +381,11 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
               <div class="flex flex-col sm:flex-row sm:items-center gap-3">
                 <span><b>Ouverture par: </b> {{ item?.openedBy }}</span>
                 <UButton
-                    :color="isParticipating(item.attendees, authenticatedUser) ? 'error' : 'neutral'"
+                    :color="isParticipating(item?.attendees, authenticatedUser) ? 'error' : 'neutral'"
                     class="sm:ml-auto w-full sm:w-auto justify-center"
-                    @click="isParticipating(item.attendees, authenticatedUser) ? onUnsubscribe(item, authenticatedUser) : onParticipateSession(item, authenticatedUser)"
+                    @click="isParticipating(item?.attendees, authenticatedUser) ? onUnsubscribe(item, authenticatedUser) : onParticipateSession(item, authenticatedUser)"
                 >
-                  {{ isParticipating(item.attendees, authenticatedUser) ? 'Me désinscrire' : 'Participer' }}
+                  {{ isParticipating(item?.attendees, authenticatedUser) ? 'Me désinscrire' : 'Participer' }}
                 </UButton>
               </div>
 
@@ -344,7 +411,7 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
         <template #footer>
           <div class="flex justify-center gap-3 pb-6 px-6">
             <UButton icon="i-lucide-plus" label="Créer" color="neutral" @click="onOpenCreateModal"/>
-            <UButton icon="i-lucide-refresh-cw" label="Rafraichir" color="neutral" @click="refresh()"/>
+            <UButton icon="i-lucide-refresh-cw" label="Rafraichir" color="neutral" @click="refreshSessions()"/>
           </div>
         </template>
       </UCard>
@@ -381,7 +448,7 @@ const isParticipating = (attendees: UserDto[], user?: UserDto | null) => {
   >
     <template #content>
       <CTable
-          :items="selectedSession.attendees"
+          :items="selectedSession?.attendees"
           :columns="columns"
       />
     </template>
